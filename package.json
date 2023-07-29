@@ -29,6 +29,7 @@
     "@testing-library/react-native": "^12.1.3",
     "@types/jest": "^29.5.3",
     "@types/react": "~18.0.14",
+    "babel-plugin-module-resolver": "^5.0.0",
     "eslint-plugin-testing-library": "^5.11.0",
     "husky": "^8.0.3",
     "jest-coverage-badges": "^1.1.2",
