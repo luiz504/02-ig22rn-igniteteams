@@ -1,13 +1,14 @@
 import { FC } from 'react'
-import { Image, Text, View } from 'react-native'
+import { Image } from 'react-native'
 
 import Logo from '@assets/logo.png'
+import { Container, Text } from './styles'
 
 export const Groups: FC = () => {
   return (
-    <View testID="wrapper">
+    <Container testID="wrapper">
       <Text> Groups </Text>
       <Image source={Logo} alt="hello" />
-    </View>
+    </Container>
   )
 }
