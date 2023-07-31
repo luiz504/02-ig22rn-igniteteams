@@ -1,5 +1,5 @@
 import { TouchableOpacity } from 'react-native'
-import styled from 'styled-components/native'
+import styled, { css } from 'styled-components/native'
 
 import UserThree from '@assets/icons/user-three.svg'
 
@@ -15,10 +15,13 @@ export const Container = styled(TouchableOpacity)`
   border-radius: 6px;
 `
 export const Text = styled.Text`
-  font-size: ${({ theme }) => theme.fontSize.lg};
   line-height: 28.8px;
-  color: ${({ theme }) => theme.colors['gray-100']};
-  font-family: ${({ theme }) => theme.fontFamily.bold};
+
+  ${({ theme }) => css`
+    font-size: ${theme.fontSize.lg};
+    color: ${theme.colors['gray-100']};
+    font-family: ${theme.fontFamily.bold};
+  `}
 `
 
 export const Icon = styled(UserThree).attrs({ width: 32, height: 32 })``

@@ -19,14 +19,20 @@ const variants: Record<ButtonTypeStyleProps, ReturnType<typeof css>> = {
 export const Container = styled(TouchableOpacity)<ContainerProps>`
   padding: 16px;
   border-radius: 6px;
+
   align-items: center;
+
   ${({ type }) => variants[type]}
 `
 export const Label = styled.Text`
+  line-height: 24px;
+
   display: flex;
   flex-shrink: 0;
-  font-family: ${({ theme }) => theme.fontFamily.bold};
-  color: ${({ theme }) => theme.colors.white};
-  font-size: ${({ theme }) => theme.fontSize.md};
-  line-height: 24px;
+
+  ${({ theme }) => css`
+    font-family: ${theme.fontFamily.bold};
+    font-size: ${theme.fontSize.md};
+    color: ${theme.colors.white};
+  `}
 `

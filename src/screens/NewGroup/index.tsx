@@ -4,6 +4,7 @@ import { Container, Content, Icon } from './styles'
 import { Header } from '@/components/Header'
 import { Highlight } from '@/components/Highlight'
 import { Button } from '@/components/Button'
+import { Input } from '@/components/Input'
 
 export const NewGroup: FC = () => {
   return (
@@ -18,7 +19,9 @@ export const NewGroup: FC = () => {
           subtitle="Create a new Team to add members"
         />
 
-        <Button label="Create" />
+        <Input placeholder="New Team name" />
+
+        <Button style={{ marginVertical: 20 }} label="Create" />
       </Content>
     </Container>
   )
