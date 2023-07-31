@@ -13,7 +13,7 @@ export const Heading = styled.Text`
   line-height: 28px;
 `
 
-export const Text = styled.Text`
+export const SubHeading = styled.Text`
   text-align: center;
   font-size: ${({ theme }) => theme.fontSize.md};
   font-family: ${({ theme }) => theme.fontFamily.regular};
