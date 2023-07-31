@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react-native'
-import { Groups } from '.'
+import { Teams } from '.'
 import { ThemeProvider } from '@/providers/ThemeProvider'
 
-describe('Should render Groups Screen', () => {
+describe('Should render Teams Screen', () => {
   it('should render correctly', () => {
-    render(<Groups />, { wrapper: ThemeProvider })
+    render(<Teams />, { wrapper: ThemeProvider })
 
     expect(screen.getByTestId('wrapper')).toBeTruthy()
   })

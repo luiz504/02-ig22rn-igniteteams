@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
 import { View } from 'react-native'
-import { Groups } from './src/screens/Groups'
+import { Teams } from './src/screens/Teams'
 
 import { useFonts } from 'expo-font'
 import { ThemeProvider } from '@/providers/ThemeProvider'
@@ -31,7 +31,7 @@ export default function App() {
             translucent={false}
             backgroundColor={theme.colors['gray-600']}
           />
-          <Groups />
+          <Teams />
         </View>
       )}
     </ThemeProvider>
