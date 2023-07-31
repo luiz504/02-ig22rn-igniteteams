@@ -1,11 +1,14 @@
 import { StatusBar } from 'expo-status-bar'
 import { View } from 'react-native'
-import { Teams } from './src/screens/Teams'
-
 import { useFonts } from 'expo-font'
+
 import { ThemeProvider } from '@/providers/ThemeProvider'
-import { Loading } from '@/components/Loading'
+
 import { theme } from '@/styles'
+
+import { Loading } from '@/components/Loading'
+import { NewGroup } from '@/screens/NewGroup'
+// import { Teams } from './src/screens/Teams'
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -31,7 +34,10 @@ export default function App() {
             translucent={false}
             backgroundColor={theme.colors['gray-600']}
           />
-          <Teams />
+
+          {/* <Teams /> */}
+
+          <NewGroup />
         </View>
       )}
     </ThemeProvider>

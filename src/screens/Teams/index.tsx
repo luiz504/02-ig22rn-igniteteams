@@ -10,8 +10,15 @@ import { ListEmptyFB } from '@/components/ListEmptyFB'
 import { Button } from '@/components/Button'
 
 export const Teams: FC = () => {
-  const [teams] = useState([])
-  // /'Groups 1', 'Groups 2', 'Groups 3'
+  const [teams] = useState([
+    //
+    'Groups 1',
+    'Groups 2',
+    'Groups 3',
+    'Groups 5',
+    'Groups 6',
+    'Groups 7',
+  ])
 
   return (
     <>
@@ -27,12 +34,13 @@ export const Teams: FC = () => {
           keyExtractor={(item) => item}
           renderItem={({ item }) => <GroupCard name={item} />}
           contentContainerStyle={{ rowGap: 12 }}
+          showsVerticalScrollIndicator={false}
           ListEmptyComponent={
             <ListEmptyFB message="How about creating the first team?" />
           }
         />
 
-        <Button type="secondary" label="Hello Moto" />
+        <Button style={{ marginVertical: 16 }} label="Create new Team" />
       </Container>
     </>
   )
