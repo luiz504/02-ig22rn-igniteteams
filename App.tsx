@@ -19,7 +19,11 @@ export default function App() {
 
       {fontsLoaded && (
         <View
-          style={{ flex: 1, backgroundColor: theme.colors['gray-600'] }}
+          style={{
+            flex: 1,
+            backgroundColor: theme.colors['gray-600'],
+            paddingHorizontal: 24,
+          }}
           testID="app-wrapper"
         >
           <StatusBar
