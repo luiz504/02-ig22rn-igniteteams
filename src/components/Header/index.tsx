@@ -8,7 +8,7 @@ type HeaderProps = {
   showBackButton?: boolean
 }
 
-export const Header: FC<HeaderProps> = ({ showBackButton = true }) => {
+export const Header: FC<HeaderProps> = ({ showBackButton = false }) => {
   return (
     <Container testID="header-container">
       {showBackButton && (

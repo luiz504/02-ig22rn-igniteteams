@@ -1,19 +1,19 @@
 import { FC } from 'react'
-import { Image } from 'react-native'
 
-import Logo from '@assets/logo.png'
-import { Container, Text } from './styles'
+import { Container } from './styles'
+
 import { Header } from '@/components/Header'
+import { Highlight } from '@/components/Highlight'
 
 export const Groups: FC = () => {
+  const title = 'New Team'
+  const subTitle = 'Create a new Team to add members'
   return (
     <>
       <Header />
+      <Highlight title={title} subtitle={subTitle} />
 
-      <Container testID="wrapper">
-        <Text> Groups </Text>
-        <Image source={Logo} alt="hello" />
-      </Container>
+      <Container testID="wrapper"></Container>
     </>
   )
 }
