@@ -18,7 +18,10 @@ export default function App() {
       {!fontsLoaded && <Loading />}
 
       {fontsLoaded && (
-        <View style={{ flex: 1, backgroundColor: theme.colors['gray-600'] }}>
+        <View
+          style={{ flex: 1, backgroundColor: theme.colors['gray-600'] }}
+          testID="app-wrapper"
+        >
           <StatusBar
             style="inverted"
             translucent={false}

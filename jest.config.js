@@ -10,6 +10,7 @@ module.exports = {
     '!**/node_modules/**',
     '!**/babel.config.js',
     '!**/jest.setup.js',
+    '!**/*.d.ts',
   ],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 }

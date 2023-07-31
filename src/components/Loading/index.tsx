@@ -4,8 +4,8 @@ import { Container, LoadingIndicator } from './styles'
 
 export const Loading: FC = () => {
   return (
-    <Container>
-      <LoadingIndicator />
+    <Container testID="container">
+      <LoadingIndicator testID="loading-indicator" />
     </Container>
   )
 }
