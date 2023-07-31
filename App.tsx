@@ -1,19 +1,45 @@
 import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, View } from 'react-native'
-import { Groups } from './src/screens/Groups'
+import { View } from 'react-native'
+import { useFonts } from 'expo-font'
+
+import { ThemeProvider } from '@/providers/ThemeProvider'
+
+import { theme } from '@/styles'
+
+import { Loading } from '@/components/Loading'
+import { NewGroup } from '@/screens/NewGroup'
+// import { Teams } from './src/screens/Teams'
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
+    'Roboto-Bold': require('./assets/fonts/Roboto-Bold.ttf'),
+  })
+
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto" translucent={false} backgroundColor="#fff" />
-      <Groups />
-    </View>
+    <ThemeProvider>
+      {!fontsLoaded && <Loading />}
+
+      {fontsLoaded && (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: theme.colors['gray-600'],
+            paddingHorizontal: 24,
+          }}
+          testID="app-wrapper"
+        >
+          <StatusBar
+            style="inverted"
+            translucent={false}
+            backgroundColor={theme.colors['gray-600']}
+          />
+
+          {/* <Teams /> */}
+
+          <NewGroup />
+        </View>
+      )}
+    </ThemeProvider>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-})
