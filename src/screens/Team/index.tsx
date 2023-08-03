@@ -1,5 +1,5 @@
-import { FC } from 'react'
-import { View } from 'react-native'
+import { FC, useState } from 'react'
+import { FlatList } from 'react-native'
 
 import { Container, Form, RowFilters, Counter } from './styles'
 
@@ -10,6 +10,15 @@ import { Input } from '@/components/Input'
 import { Filter } from '@/components/Filter'
 
 export const Team: FC = () => {
+  const [activeTeam, setActiveTeam] = useState<string | null>(null)
+  const [teams] = useState([
+    { name: 'Team 1', players: ['Luiz', 'Alexandre'] },
+    { name: 'Team 2', players: ['Marco', 'Vini'] },
+    { name: 'Team 3', players: [] },
+    { name: 'Team 4', players: ['Luiz', 'Alexandre'] },
+    { name: 'Team 5', players: ['Marco', 'Vini'] },
+    { name: 'Team 6', players: [] },
+  ])
   return (
     <Container>
       <Header showBackButton />
@@ -26,10 +35,18 @@ export const Team: FC = () => {
       </Form>
 
       <RowFilters>
-        <View style={{ flexDirection: 'row', flex: 1, overflow: 'scroll' }}>
-          <Filter label="Team 1" isActive />
-          <Filter label="Team 2" />
-        </View>
+        <FlatList
+          data={teams}
+          keyExtractor={(item) => item.name}
+          renderItem={({ item }) => (
+            <Filter
+              label={item.name}
+              isActive={item.name === activeTeam}
+              onPress={() => setActiveTeam(item.name)}
+            />
+          )}
+          horizontal
+        />
 
         <Counter>2</Counter>
       </RowFilters>

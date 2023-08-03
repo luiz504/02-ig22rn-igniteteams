@@ -15,17 +15,19 @@ export const Form = styled.View`
 
 export const RowFilters = styled.View`
   margin-top: 32px;
+  width: 100%;
+
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
 `
 
 export const Counter = styled.Text`
+  margin-left: 18px;
+  line-height: 22.4px;
+
   ${({ theme }) => css`
     color: ${theme.colors['gray-200']};
     font-size: ${theme.fontSize.sm};
     font-family: ${theme.fontFamily.bold};
-    line-height: 22.4px;
   `}
 `
