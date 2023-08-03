@@ -14,7 +14,7 @@ export const Form = styled.View`
 `
 
 export const RowFilters = styled.View`
-  margin-top: 32px;
+  margin: 32px 0px;
   width: 100%;
 
   flex-direction: row;
