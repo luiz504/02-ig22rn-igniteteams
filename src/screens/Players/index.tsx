@@ -13,8 +13,17 @@ import { PlayerCard } from '@/components/PlayerCard'
 import { ListEmptyFB } from '@/components/ListEmptyFB'
 import { Button } from '@/components/Button'
 import { ContainerBase } from '@/components/ContainerBase'
+import { useRoute } from '@react-navigation/native'
 
-export const Team: FC = () => {
+type RouteParams = {
+  team: {
+    name: string
+    id: string
+  }
+}
+export const Players: FC = () => {
+  const { team } = useRoute().params as RouteParams
+
   const [teams] = useState([
     {
       name: 'Team 1',
@@ -39,7 +48,7 @@ export const Team: FC = () => {
       <Header showBackButton />
 
       <Highlight
-        title="[Team Name]"
+        title={team.name}
         subtitle="Add the people and split the teams"
       />
 
