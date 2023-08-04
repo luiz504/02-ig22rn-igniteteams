@@ -7,8 +7,9 @@ import { ThemeProvider } from '@/providers/ThemeProvider'
 import { theme } from '@/styles'
 
 import { Loading } from '@/components/Loading'
-import { NewGroup } from '@/screens/NewGroup'
+// import { NewGroup } from '@/screens/NewGroup'
 // import { Teams } from './src/screens/Teams'
+import { Team } from '@/screens/Team'
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -37,7 +38,9 @@ export default function App() {
 
           {/* <Teams /> */}
 
-          <NewGroup />
+          {/* <NewGroup /> */}
+
+          <Team />
         </View>
       )}
     </ThemeProvider>
