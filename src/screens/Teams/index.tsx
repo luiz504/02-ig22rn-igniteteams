@@ -1,5 +1,6 @@
-import { FC, useState } from 'react'
+import { FC, useCallback, useState } from 'react'
 import { FlatList } from 'react-native'
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
 
 import { Header } from '@/components/Header'
 import { Highlight } from '@/components/Highlight'
@@ -7,18 +8,19 @@ import { GroupCard } from '@/components/GroupCard'
 import { ListEmptyFB } from '@/components/ListEmptyFB'
 import { Button } from '@/components/Button'
 import { ContainerBase } from '@/components/ContainerBase'
-import { useNavigation } from '@react-navigation/native'
+import { getAllTeams } from '@/storage/teams/getallTeams'
+
+import { Team } from '@/models/Team'
 
 export const Teams: FC = () => {
-  const [teams] = useState([
-    //
-    'Groups 1',
-    'Groups 2',
-    'Groups 3',
-    'Groups 5',
-    'Groups 6',
-    'Groups 7',
-  ])
+  const [teams, setTeams] = useState<Team[]>([])
+
+  useFocusEffect(
+    useCallback(() => {
+      const teams = getAllTeams()
+      setTeams(teams)
+    }, []),
+  )
 
   const navigation = useNavigation()
 
@@ -37,8 +39,8 @@ export const Teams: FC = () => {
 
         <FlatList
           data={teams}
-          keyExtractor={(item) => item}
-          renderItem={({ item }) => <GroupCard name={item} />}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <GroupCard name={item.name} />}
           contentContainerStyle={{ rowGap: 12 }}
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={

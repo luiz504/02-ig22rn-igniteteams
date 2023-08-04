@@ -8,6 +8,8 @@ import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
 import { ContainerBase } from '@/components/ContainerBase'
 import { useNavigation } from '@react-navigation/native'
+import { createTeam } from '@/storage/teams/createTeam'
+import { ZodError } from 'zod'
 
 export const NewTeam: FC = () => {
   const [teamName, setTeamName] = useState('')
@@ -16,19 +18,15 @@ export const NewTeam: FC = () => {
   const navigation = useNavigation()
 
   const handleCreateTeam = () => {
-    if (!teamName.length) {
-      return setError('Name is required to create new Team')
-    }
-    if (teamName.length < 3) {
-      return setError('Name must have at least 3 letters to create new Team')
-    }
+    try {
+      const newTeam = createTeam(teamName)
 
-    const newTeam = {
-      id: String(Math.round(Math.random() * teamName.length * Date.now())),
-      name: teamName,
+      navigation.navigate('players', { team: newTeam })
+    } catch (err) {
+      if (err instanceof ZodError) {
+        setError(err.errors[0].message)
+      }
     }
-
-    navigation.navigate('players', { team: newTeam })
   }
 
   return (
