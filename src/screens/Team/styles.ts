@@ -1,9 +1,5 @@
 import styled, { css } from 'styled-components/native'
 
-export const Container = styled.View`
-  flex: 1;
-`
-
 export const Form = styled.View`
   background-color: ${({ theme }) => theme.colors['gray-700']};
 

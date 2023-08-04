@@ -1,13 +1,13 @@
 import { FC, useState } from 'react'
 import { FlatList } from 'react-native'
 
-import { Container } from './styles'
-
 import { Header } from '@/components/Header'
 import { Highlight } from '@/components/Highlight'
 import { GroupCard } from '@/components/GroupCard'
 import { ListEmptyFB } from '@/components/ListEmptyFB'
 import { Button } from '@/components/Button'
+import { ContainerBase } from '@/components/ContainerBase'
+import { useNavigation } from '@react-navigation/native'
 
 export const Teams: FC = () => {
   const [teams] = useState([
@@ -20,9 +20,15 @@ export const Teams: FC = () => {
     'Groups 7',
   ])
 
+  const navigation = useNavigation()
+
+  const handleNewGroup = () => {
+    navigation.navigate('new-team')
+  }
+
   return (
     <>
-      <Container testID="wrapper">
+      <ContainerBase testID="wrapper-teams">
         <Header />
         <Highlight
           title={'New Team'}
@@ -40,8 +46,13 @@ export const Teams: FC = () => {
           }
         />
 
-        <Button style={{ marginVertical: 16 }} label="Create new Team" />
-      </Container>
+        <Button
+          style={{ marginVertical: 16 }}
+          label="Create new Team"
+          onPress={handleNewGroup}
+          testID="btn-create-team"
+        />
+      </ContainerBase>
     </>
   )
 }

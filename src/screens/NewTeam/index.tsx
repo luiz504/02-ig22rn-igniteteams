@@ -1,14 +1,16 @@
 import { FC } from 'react'
 
-import { Container, Content, Icon } from './styles'
+import { Content, Icon } from './styles'
+
 import { Header } from '@/components/Header'
 import { Highlight } from '@/components/Highlight'
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
+import { ContainerBase } from '@/components/ContainerBase'
 
-export const NewGroup: FC = () => {
+export const NewTeam: FC = () => {
   return (
-    <Container>
+    <ContainerBase>
       <Header showBackButton />
 
       <Content>
@@ -23,6 +25,6 @@ export const NewGroup: FC = () => {
 
         <Button style={{ marginVertical: 20 }} label="Create" />
       </Content>
-    </Container>
+    </ContainerBase>
   )
 }
