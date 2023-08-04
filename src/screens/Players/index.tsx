@@ -2,7 +2,7 @@
 import { FC, useMemo, useState } from 'react'
 import { FlatList } from 'react-native'
 
-import { Container, Form, RowFilters, Counter } from './styles'
+import { Form, RowFilters, Counter } from './styles'
 
 import { Header } from '@/components/Header'
 import { Highlight } from '@/components/Highlight'
@@ -12,8 +12,18 @@ import { Filter } from '@/components/Filter'
 import { PlayerCard } from '@/components/PlayerCard'
 import { ListEmptyFB } from '@/components/ListEmptyFB'
 import { Button } from '@/components/Button'
+import { ContainerBase } from '@/components/ContainerBase'
+import { useRoute } from '@react-navigation/native'
 
-export const Team: FC = () => {
+type RouteParams = {
+  team: {
+    name: string
+    id: string
+  }
+}
+export const Players: FC = () => {
+  const { team } = useRoute().params as RouteParams
+
   const [teams] = useState([
     {
       name: 'Team 1',
@@ -34,11 +44,11 @@ export const Team: FC = () => {
   const hasPlayersOnSelectedTeam = !!playerOfSelectedTeam.length
 
   return (
-    <Container>
+    <ContainerBase>
       <Header showBackButton />
 
       <Highlight
-        title="[Team Name]"
+        title={team.name}
         subtitle="Add the people and split the teams"
       />
 
@@ -90,6 +100,6 @@ export const Team: FC = () => {
         type="secondary"
         testID={'btn-remove-team'}
       />
-    </Container>
+    </ContainerBase>
   )
 }

@@ -22,16 +22,13 @@ describe('App Component', () => {
     useFontSpy().mockReturnValue([true, null])
 
     render(<App />)
-    const appWrapperElement = screen.getByTestId('app-wrapper')
+    const appWrapperElement = screen.getByTestId('wrapper-teams')
     const statusBarElement = screen.UNSAFE_getByType(StatusBar)
 
     expect(screen.queryByTestId('loading-indicator')).toBeNull()
-    expect(appWrapperElement).toBeTruthy()
-    expect(appWrapperElement).toHaveStyle({
-      backgroundColor: theme.colors['gray-600'],
-      flex: 1,
-    })
-    expect(statusBarElement).toBeTruthy()
+    expect(appWrapperElement).toBeOnTheScreen()
+
+    expect(statusBarElement).toBeOnTheScreen()
     expect(statusBarElement).toHaveProp(
       'backgroundColor',
       theme.colors['gray-600'],
