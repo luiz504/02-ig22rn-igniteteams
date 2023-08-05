@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useRef, useState } from 'react'
 
 import { Content, Icon } from './styles'
 
@@ -10,8 +10,12 @@ import { ContainerBase } from '@/components/ContainerBase'
 import { useNavigation } from '@react-navigation/native'
 import { createTeam } from '@/storage/teams/createTeam'
 import { ZodError } from 'zod'
+import { AppError } from '@/utils/AppError'
+import { Alert, TextInput } from 'react-native'
 
 export const NewTeam: FC = () => {
+  const inputRef = useRef<TextInput>(null)
+
   const [teamName, setTeamName] = useState('')
   const [error, setError] = useState('')
 
@@ -24,7 +28,12 @@ export const NewTeam: FC = () => {
       navigation.navigate('players', { team: newTeam })
     } catch (err) {
       if (err instanceof ZodError) {
+        inputRef.current?.blur()
         setError(err.errors[0].message)
+        Alert.alert('New Group Fail', err.errors[0].message)
+      }
+      if (err instanceof AppError) {
+        Alert.alert('New Group Fail', err.message)
       }
     }
   }
@@ -42,6 +51,7 @@ export const NewTeam: FC = () => {
         />
 
         <Input
+          ref={inputRef}
           placeholder="New Team name"
           value={teamName}
           onChangeText={(e) => setTeamName(e)}
