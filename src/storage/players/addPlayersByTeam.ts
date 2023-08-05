@@ -6,9 +6,7 @@ import { PLAYER_COLLECTION } from '../config'
 import { getPlayersByTeam } from './getPlayersByTeam'
 import { AppError } from '@/utils/AppError'
 
-const teamSchema = z
-  .string()
-  .nonempty({ message: 'The team name must have at least 3 characters' })
+const teamSchema = z.string().nonempty({ message: 'The team name is required' })
 
 const playerSchema = z.object({
   name: z
