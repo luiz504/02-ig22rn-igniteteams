@@ -1,6 +1,10 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import { FC, useMemo, useState } from 'react'
-import { FlatList } from 'react-native'
+import { Alert, FlatList } from 'react-native'
+import { useRoute } from '@react-navigation/native'
+import { ZodError } from 'zod'
+
+import { addPlayerByTeam } from '@/storage/players/addPlayersByTeam'
+import { AppError } from '@/utils/AppError'
 
 import { Form, RowFilters, Counter } from './styles'
 
@@ -13,12 +17,12 @@ import { PlayerCard } from '@/components/PlayerCard'
 import { ListEmptyFB } from '@/components/ListEmptyFB'
 import { Button } from '@/components/Button'
 import { ContainerBase } from '@/components/ContainerBase'
-import { useRoute } from '@react-navigation/native'
+
+// import { getPlayersByTeam } from '@/storage/players/getPlayersByTeam'
 
 type RouteParams = {
   team: {
     name: string
-    id: string
   }
 }
 export const Players: FC = () => {
@@ -41,6 +45,29 @@ export const Players: FC = () => {
     return teams.find((team) => team.name === activeTeam)?.players || []
   }, [teams, activeTeam])
 
+  const [playerName, setPlayerName] = useState('')
+
+  const handleAddTeamPlayer = () => {
+    const newPlayer = {
+      name: playerName,
+      team: team.name,
+    }
+
+    try {
+      addPlayerByTeam(newPlayer, team.name)
+
+      // const updatedTeam = getPlayersByTeam(team.name)
+      // console.log('new', updatedTeam)
+    } catch (err) {
+      if (err instanceof AppError) {
+        Alert.alert('New Player', err.message)
+      }
+      if (err instanceof ZodError) {
+        Alert.alert('New Player', err.errors[0].message)
+      }
+    }
+  }
+
   const hasPlayersOnSelectedTeam = !!playerOfSelectedTeam.length
 
   return (
@@ -53,9 +80,20 @@ export const Players: FC = () => {
       />
 
       <Form>
-        <Input style={{ flex: 1 }} />
+        <Input
+          style={{ flex: 1 }}
+          placeholder="Player Name"
+          value={playerName}
+          onChangeText={(value) => setPlayerName(value)}
+          testID="player-name-input"
+          onSubmitEditing={handleAddTeamPlayer}
+        />
 
-        <ButtonIcon iconName="add" />
+        <ButtonIcon
+          iconName="add"
+          onPress={handleAddTeamPlayer}
+          testID="submit-btn"
+        />
       </Form>
 
       <RowFilters>
@@ -86,6 +124,7 @@ export const Players: FC = () => {
         ]}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
           <PlayerCard label={item} onDeletePress={() => {}} />
         )}
         showsVerticalScrollIndicator={false}
@@ -98,7 +137,7 @@ export const Players: FC = () => {
         style={{ marginBottom: 24 }}
         label="Remove Team"
         type="secondary"
-        testID={'btn-remove-team'}
+        testID={'remove-team-btn'}
       />
     </ContainerBase>
   )
