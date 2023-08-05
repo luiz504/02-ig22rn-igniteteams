@@ -2,6 +2,8 @@ import { fireEvent, screen } from '@testing-library/react-native'
 import { Teams } from '.'
 import { renderWithThemeAndNavigation } from '@/utils/test-utils'
 import { useNavigation } from '@react-navigation/native'
+import { localStorage } from '@/libs/mmkv'
+import { Team } from '@/models/Team'
 
 jest.mock('@react-navigation/native', () => {
   return {
@@ -11,10 +13,20 @@ jest.mock('@react-navigation/native', () => {
 })
 describe('Should render Teams Screen', () => {
   const btnCreateTeamID = 'btn-create-team'
-
+  const savedTeamsMock: Team[] = [
+    { id: 't1', name: 't13', players: [] },
+    { id: 't2', name: 't23', players: [] },
+  ]
   beforeEach(() => {
     jest.resetAllMocks()
   })
+
+  const useMockNavigate = () => {
+    const navigateMock = jest.fn()
+    jest.mocked(useNavigation).mockReturnValue({ navigate: navigateMock })
+    return navigateMock
+  }
+
   it('should render correctly', () => {
     renderWithThemeAndNavigation(<Teams />)
 
@@ -22,9 +34,9 @@ describe('Should render Teams Screen', () => {
     expect(screen.getByTestId(btnCreateTeamID)).toBeOnTheScreen()
   })
   it('should navigate to NewGroup Route when press the New Group button', () => {
-    const navigateMock = jest.fn()
-    jest.mocked(useNavigation).mockReturnValue({ navigate: navigateMock })
+    const navigateMock = useMockNavigate()
     renderWithThemeAndNavigation(<Teams />)
+
     const btnCreateTeamElement = screen.getByTestId(btnCreateTeamID)
 
     // Act
@@ -33,5 +45,28 @@ describe('Should render Teams Screen', () => {
     // Results
     expect(navigateMock).toBeCalledTimes(1)
     expect(navigateMock).toBeCalledWith('new-team')
+  })
+
+  it('should navigate to the correct Players screen page', () => {
+    jest
+      .spyOn(localStorage, 'getString')
+      .mockReturnValue(JSON.stringify(savedTeamsMock))
+
+    const navigateMock = useMockNavigate()
+    renderWithThemeAndNavigation(<Teams />)
+
+    const teamCardElement = screen.getByTestId(
+      `team-card-${savedTeamsMock[1].id}`,
+    )
+
+    expect(teamCardElement).toBeOnTheScreen()
+
+    // Acts
+    fireEvent.press(teamCardElement)
+
+    expect(navigateMock).toHaveBeenCalledTimes(1)
+    expect(navigateMock).toHaveBeenCalledWith('players', {
+      team: savedTeamsMock[1],
+    })
   })
 })

@@ -24,6 +24,14 @@ export const Teams: FC = () => {
 
   const navigation = useNavigation()
 
+  const handleNavigateToTeamScreen = (teamId: string) => {
+    const team = teams.find((t) => t.id === teamId)
+
+    if (team) {
+      navigation.navigate('players', { team })
+    }
+  }
+
   const handleNewGroup = () => {
     navigation.navigate('new-team')
   }
@@ -40,7 +48,13 @@ export const Teams: FC = () => {
         <FlatList
           data={teams}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <GroupCard name={item.name} />}
+          renderItem={({ item }) => (
+            <GroupCard
+              name={item.name}
+              onPress={() => handleNavigateToTeamScreen(item.id)}
+              testID={`team-card-${item.id}`}
+            />
+          )}
           contentContainerStyle={{ rowGap: 12 }}
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={
