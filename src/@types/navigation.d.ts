@@ -6,7 +6,6 @@ export declare global {
       players: {
         team: {
           name: string
-          id: string
         }
       }
     }

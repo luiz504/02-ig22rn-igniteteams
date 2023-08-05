@@ -3,7 +3,6 @@ import { Teams } from '.'
 import { renderWithThemeAndNavigation } from '@/utils/test-utils'
 import { useNavigation } from '@react-navigation/native'
 import { localStorage } from '@/libs/mmkv'
-import { Team } from '@/models/Team'
 
 jest.mock('@react-navigation/native', () => {
   return {
@@ -13,10 +12,7 @@ jest.mock('@react-navigation/native', () => {
 })
 describe('Should render Teams Screen', () => {
   const btnCreateTeamID = 'btn-create-team'
-  const savedTeamsMock: Team[] = [
-    { id: 't1', name: 't13', players: [] },
-    { id: 't2', name: 't23', players: [] },
-  ]
+  const savedTeamsMock = ['t13', 't23']
   beforeEach(() => {
     jest.resetAllMocks()
   })
@@ -55,9 +51,7 @@ describe('Should render Teams Screen', () => {
     const navigateMock = useMockNavigate()
     renderWithThemeAndNavigation(<Teams />)
 
-    const teamCardElement = screen.getByTestId(
-      `team-card-${savedTeamsMock[1].id}`,
-    )
+    const teamCardElement = screen.getByTestId(`team-card-${savedTeamsMock[1]}`)
 
     expect(teamCardElement).toBeOnTheScreen()
 
@@ -66,7 +60,7 @@ describe('Should render Teams Screen', () => {
 
     expect(navigateMock).toHaveBeenCalledTimes(1)
     expect(navigateMock).toHaveBeenCalledWith('players', {
-      team: savedTeamsMock[1],
+      team: { name: savedTeamsMock[1] },
     })
   })
 })

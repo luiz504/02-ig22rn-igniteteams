@@ -27,7 +27,7 @@ export const NewTeam: FC = () => {
     try {
       const newTeam = createTeam(teamName)
 
-      navigation.navigate('players', { team: newTeam })
+      navigation.navigate('players', { team: { name: newTeam } })
     } catch (err) {
       if (err instanceof ZodError) {
         inputRef.current?.blur()

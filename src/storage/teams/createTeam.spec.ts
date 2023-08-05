@@ -1,7 +1,6 @@
 import { localStorage } from '@/libs/mmkv'
 import { TEAM_COLLECTION } from '../config'
 import { createTeam } from './createTeam'
-import { Team } from '@/models/Team'
 
 describe('create Team Function', () => {
   beforeEach(() => {
@@ -13,22 +12,24 @@ describe('create Team Function', () => {
 
     const createdTeam = createTeam(teamName)
 
-    expect(createdTeam).toEqual(
-      expect.objectContaining({ name: teamName, players: [] }),
-    )
+    expect(createdTeam).toBe(teamName)
   })
-  it('should throw an error when trying to create a team with string < 3', () => {
-    expect(() => createTeam('12')).toThrow()
+  it('should throw an error when passing wrong name format', () => {
     expect(() => createTeam('')).toThrow()
     expect(() => createTeam(null as any)).toThrow()
     expect(() => createTeam([] as any)).toThrow()
     expect(() => createTeam({} as any)).toThrow()
+    expect(() =>
+      createTeam(
+        '1gh23ih1h23hui1h2ui3hui 1ui2h3uih1ui2h3iu1hui23hui1h2ui3hui1h23uih',
+      ),
+    ).toThrow()
   })
 
   it('should throw an error when trying to create a team with a name already in use', () => {
-    const savedTeamsMock: Team[] = [{ id: 't1', name: 't13', players: [] }]
+    const savedTeamsMock = ['t13']
     localStorage.set(TEAM_COLLECTION, JSON.stringify(savedTeamsMock))
 
-    expect(() => createTeam(savedTeamsMock[0].name)).toThrow()
+    expect(() => createTeam(savedTeamsMock[0])).toThrow()
   })
 })

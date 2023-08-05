@@ -10,10 +10,8 @@ import { Button } from '@/components/Button'
 import { ContainerBase } from '@/components/ContainerBase'
 import { getAllTeams } from '@/storage/teams/getallTeams'
 
-import { Team } from '@/models/Team'
-
 export const Teams: FC = () => {
-  const [teams, setTeams] = useState<Team[]>([])
+  const [teams, setTeams] = useState<string[]>([])
 
   useFocusEffect(
     useCallback(() => {
@@ -24,11 +22,11 @@ export const Teams: FC = () => {
 
   const navigation = useNavigation()
 
-  const handleNavigateToTeamScreen = (teamId: string) => {
-    const team = teams.find((t) => t.id === teamId)
+  const handleNavigateToTeamScreen = (teamName: string) => {
+    const teamExists = teams.includes(teamName)
 
-    if (team) {
-      navigation.navigate('players', { team })
+    if (teamExists) {
+      navigation.navigate('players', { team: { name: teamName } })
     }
   }
 
@@ -47,12 +45,12 @@ export const Teams: FC = () => {
 
         <FlatList
           data={teams}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item}
           renderItem={({ item }) => (
             <GroupCard
-              name={item.name}
-              onPress={() => handleNavigateToTeamScreen(item.id)}
-              testID={`team-card-${item.id}`}
+              name={item}
+              onPress={() => handleNavigateToTeamScreen(item)}
+              testID={`team-card-${item}`}
             />
           )}
           contentContainerStyle={{ rowGap: 12 }}

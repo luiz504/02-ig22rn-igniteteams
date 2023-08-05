@@ -1,11 +1,10 @@
+import { Alert } from 'react-native'
 import { fireEvent, screen } from '@testing-library/react-native'
+import { useNavigation } from '@react-navigation/native'
 import { NewTeam } from '.'
 
 import { renderWithThemeAndNavigation } from '@/utils/test-utils'
-import { Team } from '@/models/Team'
-import { Alert } from 'react-native'
 import { localStorage } from '@/libs/mmkv'
-import { useNavigation } from '@react-navigation/native'
 
 jest.mock('@react-navigation/native', () => {
   return {
@@ -17,10 +16,7 @@ describe('NewTeam Component', () => {
   const inputID = 'input-new-team'
   const submitButtonID = 'submit-btn'
 
-  const savedTeamsMock: Team[] = [
-    { id: 't1', name: 't13', players: [] },
-    { id: 't2', name: 't23', players: [] },
-  ]
+  const savedTeamsMock = ['t13', 't23']
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -43,7 +39,7 @@ describe('NewTeam Component', () => {
     const inputElement = screen.getByTestId(inputID)
     const submitBtnElement = screen.getByTestId(submitButtonID)
 
-    fireEvent.changeText(inputElement, savedTeamsMock[0].name)
+    fireEvent.changeText(inputElement, savedTeamsMock[0])
     fireEvent.press(submitBtnElement)
 
     expect(alertSpy).toHaveBeenCalledTimes(1)
@@ -87,7 +83,7 @@ describe('NewTeam Component', () => {
 
     expect(navigateMock).toBeCalledTimes(1)
     expect(navigateMock).toBeCalledWith('players', {
-      team: expect.objectContaining({ name: newTeamName, players: [] }),
+      team: { name: newTeamName },
     })
   })
 })
