@@ -2,8 +2,8 @@ import { View } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { useTheme } from 'styled-components/native'
 
-import { Teams } from '@/screens/Teams'
-import { NewTeam } from '@/screens/NewTeam'
+import { Groups } from '@/screens/Groups'
+import { NewGroup } from '@/screens/NewGroup'
 import { Players } from '@/screens/Players'
 
 const { Navigator, Screen } = createNativeStackNavigator()
@@ -13,11 +13,11 @@ export function AppRoutes() {
   return (
     <View style={{ flex: 1, backgroundColor: theme.colors['gray-600'] }}>
       <Navigator
-        initialRouteName="teams"
+        initialRouteName="groups"
         screenOptions={{ headerShown: false, animation: 'fade_from_bottom' }}
       >
-        <Screen name="teams" component={Teams} />
-        <Screen name="new-team" component={NewTeam} />
+        <Screen name="groups" component={Groups} />
+        <Screen name="new-group" component={NewGroup} />
         <Screen name="players" component={Players} />
       </Navigator>
     </View>

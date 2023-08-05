@@ -1,5 +1,5 @@
 import { fireEvent, screen } from '@testing-library/react-native'
-import { Teams } from '.'
+import { Groups } from '.'
 import { renderWithThemeAndNavigation } from '@/utils/test-utils'
 import { useNavigation } from '@react-navigation/native'
 import { localStorage } from '@/libs/mmkv'
@@ -10,9 +10,9 @@ jest.mock('@react-navigation/native', () => {
     useNavigation: jest.fn(),
   }
 })
-describe('Should render Teams Screen', () => {
-  const btnCreateTeamID = 'btn-create-team'
-  const savedTeamsMock = ['t13', 't23']
+describe('Should render Groups Screen', () => {
+  const btnCreateGroupID = 'btn-create-group'
+  const savedGroupsMock = ['t13', 't23']
   beforeEach(() => {
     jest.resetAllMocks()
   })
@@ -24,43 +24,45 @@ describe('Should render Teams Screen', () => {
   }
 
   it('should render correctly', () => {
-    renderWithThemeAndNavigation(<Teams />)
+    renderWithThemeAndNavigation(<Groups />)
 
-    expect(screen.getByTestId('wrapper-teams')).toBeOnTheScreen()
-    expect(screen.getByTestId(btnCreateTeamID)).toBeOnTheScreen()
+    expect(screen.getByTestId('wrapper-groups')).toBeOnTheScreen()
+    expect(screen.getByTestId(btnCreateGroupID)).toBeOnTheScreen()
   })
-  it('should navigate to NewGroup Route when press the New Group button', () => {
+  it('should navigate to new-group Route when press the New Group button', () => {
     const navigateMock = useMockNavigate()
-    renderWithThemeAndNavigation(<Teams />)
+    renderWithThemeAndNavigation(<Groups />)
 
-    const btnCreateTeamElement = screen.getByTestId(btnCreateTeamID)
+    const btnCreateGroupElement = screen.getByTestId(btnCreateGroupID)
 
     // Act
-    fireEvent.press(btnCreateTeamElement)
+    fireEvent.press(btnCreateGroupElement)
 
     // Results
     expect(navigateMock).toBeCalledTimes(1)
-    expect(navigateMock).toBeCalledWith('new-team')
+    expect(navigateMock).toBeCalledWith('new-group')
   })
 
   it('should navigate to the correct Players screen page', () => {
     jest
       .spyOn(localStorage, 'getString')
-      .mockReturnValue(JSON.stringify(savedTeamsMock))
+      .mockReturnValue(JSON.stringify(savedGroupsMock))
 
     const navigateMock = useMockNavigate()
-    renderWithThemeAndNavigation(<Teams />)
+    renderWithThemeAndNavigation(<Groups />)
 
-    const teamCardElement = screen.getByTestId(`team-card-${savedTeamsMock[1]}`)
+    const groupCardElement = screen.getByTestId(
+      `group-card-${savedGroupsMock[1]}`,
+    )
 
-    expect(teamCardElement).toBeOnTheScreen()
+    expect(groupCardElement).toBeOnTheScreen()
 
     // Acts
-    fireEvent.press(teamCardElement)
+    fireEvent.press(groupCardElement)
 
     expect(navigateMock).toHaveBeenCalledTimes(1)
     expect(navigateMock).toHaveBeenCalledWith('players', {
-      team: { name: savedTeamsMock[1] },
+      group: { name: savedGroupsMock[1] },
     })
   })
 })

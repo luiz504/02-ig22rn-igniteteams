@@ -1,10 +1,10 @@
 export declare global {
   namespace ReactNavigation {
     interface RootParamList {
-      teams: undefined
-      'new-team': undefined
+      groups: undefined
+      'new-group': undefined
       players: {
-        team: {
+        group: {
           name: string
         }
       }

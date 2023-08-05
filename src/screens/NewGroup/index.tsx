@@ -3,7 +3,7 @@ import { FC, useRef, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { ZodError } from 'zod'
 
-import { createTeam } from '@/storage/teams/createTeam'
+import { createGroup } from '@/storage/groups/createGroup'
 
 import { AppError } from '@/utils/AppError'
 
@@ -15,19 +15,19 @@ import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
 import { ContainerBase } from '@/components/ContainerBase'
 
-export const NewTeam: FC = () => {
+export const NewGroup: FC = () => {
   const inputRef = useRef<TextInput>(null)
 
-  const [teamName, setTeamName] = useState('')
+  const [groupName, setGroupName] = useState('')
   const [error, setError] = useState('')
 
   const navigation = useNavigation()
 
-  const handleCreateTeam = () => {
+  const handleCreateGroup = () => {
     try {
-      const newTeam = createTeam(teamName)
+      const newTeam = createGroup(groupName)
 
-      navigation.navigate('players', { team: { name: newTeam } })
+      navigation.navigate('players', { group: { name: newTeam } })
     } catch (err) {
       if (err instanceof ZodError) {
         inputRef.current?.blur()
@@ -48,26 +48,26 @@ export const NewTeam: FC = () => {
         <Icon testID="users-icon" />
 
         <Highlight
-          title="New Team"
-          subtitle="Create a new Team to add members"
+          title="New Group"
+          subtitle="Create a new Group to add members"
         />
 
         <Input
           ref={inputRef}
-          placeholder="New Team name"
-          value={teamName}
-          onChangeText={(e) => setTeamName(e)}
+          placeholder="New Group name"
+          value={groupName}
+          onChangeText={(e) => setGroupName(e)}
           keyboardAppearance="dark"
           autoCorrect={false}
           onFocus={() => setError('')}
           hasError={!!error}
-          testID="input-new-team"
+          testID="input-new-group"
         />
 
         <Button
           style={{ marginVertical: 20 }}
           label="Create"
-          onPress={handleCreateTeam}
+          onPress={handleCreateGroup}
           testID="submit-btn"
         />
       </Content>

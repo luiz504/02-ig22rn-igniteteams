@@ -1,9 +1,9 @@
 import { localStorage } from '@/libs/mmkv'
 import { PlayerStorageDTO } from './PlayerStorageDTO'
-import { getPlayersByTeam } from './getPlayersByTeam'
+import { getPlayersByGroup } from './getPlayersByGroup'
 
 describe('getPlayersByTeam function', () => {
-  it('should return the correct team players', () => {
+  it('should return the correct players from a Group', () => {
     //* Team found Case
     const teamWIthPlayers: PlayerStorageDTO[] = [
       { name: 'John doe', team: 't1' },
@@ -13,11 +13,11 @@ describe('getPlayersByTeam function', () => {
       .spyOn(localStorage, 'getString')
       .mockReturnValue(JSON.stringify(teamWIthPlayers))
 
-    expect(getPlayersByTeam('t1')).toEqual(teamWIthPlayers)
+    expect(getPlayersByGroup('t1')).toEqual(teamWIthPlayers)
 
     //* No team found Case
     localHostSpy.mockReset()
 
-    expect(getPlayersByTeam('t1')).toEqual([])
+    expect(getPlayersByGroup('t1')).toEqual([])
   })
 })

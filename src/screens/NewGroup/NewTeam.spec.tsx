@@ -1,7 +1,7 @@
 import { Alert } from 'react-native'
 import { fireEvent, screen } from '@testing-library/react-native'
 import { useNavigation } from '@react-navigation/native'
-import { NewTeam } from '.'
+import { NewGroup } from '.'
 
 import { renderWithThemeAndNavigation } from '@/utils/test-utils'
 import { localStorage } from '@/libs/mmkv'
@@ -12,8 +12,8 @@ jest.mock('@react-navigation/native', () => {
     useNavigation: jest.fn(),
   }
 })
-describe('NewTeam Component', () => {
-  const inputID = 'input-new-team'
+describe('NewGroup Component', () => {
+  const inputID = 'input-new-group'
   const submitButtonID = 'submit-btn'
 
   const savedTeamsMock = ['t13', 't23']
@@ -22,14 +22,14 @@ describe('NewTeam Component', () => {
     jest.clearAllMocks()
   })
   it('should render correctly', () => {
-    renderWithThemeAndNavigation(<NewTeam />)
+    renderWithThemeAndNavigation(<NewGroup />)
 
     expect(screen.getByTestId(inputID)).toBeOnTheScreen()
     expect(screen.getByTestId(submitButtonID)).toBeOnTheScreen()
   })
 
   it('should trigger Alert if the name is already in use', () => {
-    renderWithThemeAndNavigation(<NewTeam />)
+    renderWithThemeAndNavigation(<NewGroup />)
     jest
       .spyOn(localStorage, 'getString')
       .mockReturnValue(JSON.stringify(savedTeamsMock))
@@ -49,13 +49,13 @@ describe('NewTeam Component', () => {
     )
   })
 
-  it('should trigger Alert if the name field does not respect the createTeam constrains', () => {
+  it('should trigger Alert if the name field does not respect the createGroup constrains', () => {
     jest
       .spyOn(localStorage, 'getString')
       .mockReturnValue(JSON.stringify(savedTeamsMock))
     const alertSpy = jest.spyOn(Alert, 'alert')
 
-    renderWithThemeAndNavigation(<NewTeam />)
+    renderWithThemeAndNavigation(<NewGroup />)
 
     const submitBtnElement = screen.getByTestId(submitButtonID)
     fireEvent.press(submitBtnElement)
@@ -67,11 +67,11 @@ describe('NewTeam Component', () => {
     )
   })
 
-  it('should navigate to the Players screen passing the team created', () => {
+  it('should navigate to the Players screen passing the group created', () => {
     const navigateMock = jest.fn()
     jest.mocked(useNavigation).mockReturnValue({ navigate: navigateMock })
 
-    renderWithThemeAndNavigation(<NewTeam />)
+    renderWithThemeAndNavigation(<NewGroup />)
 
     const newTeamName = 'New Fake Team'
 
@@ -83,7 +83,7 @@ describe('NewTeam Component', () => {
 
     expect(navigateMock).toBeCalledTimes(1)
     expect(navigateMock).toBeCalledWith('players', {
-      team: { name: newTeamName },
+      group: { name: newTeamName },
     })
   })
 })

@@ -3,7 +3,8 @@ import { Alert, FlatList } from 'react-native'
 import { useRoute } from '@react-navigation/native'
 import { ZodError } from 'zod'
 
-import { addPlayerByTeam } from '@/storage/players/addPlayersByTeam'
+import { addPlayerByGroup } from '@/storage/players/addPlayersByGroup'
+
 import { AppError } from '@/utils/AppError'
 
 import { Form, RowFilters, Counter } from './styles'
@@ -54,7 +55,7 @@ export const Players: FC = () => {
     }
 
     try {
-      addPlayerByTeam(newPlayer, team.name)
+      addPlayerByGroup(newPlayer, team.name)
 
       // const updatedTeam = getPlayersByTeam(team.name)
       // console.log('new', updatedTeam)

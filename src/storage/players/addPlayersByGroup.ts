@@ -3,22 +3,25 @@ import { z } from 'zod'
 import { localStorage } from '@/libs/mmkv'
 import { PlayerStorageDTO } from './PlayerStorageDTO'
 import { PLAYER_COLLECTION } from '../config'
-import { getPlayersByTeam } from './getPlayersByTeam'
+import { getPlayersByGroup } from './getPlayersByGroup'
 import { AppError } from '@/utils/AppError'
 
-const teamSchema = z.string().nonempty({ message: 'The team name is required' })
+const groupSchema = z
+  .string()
+  .nonempty({ message: 'The group name is required' })
 
 const playerSchema = z.object({
   name: z
     .string()
     .min(3, { message: 'The player name must have at least 3 characters' }),
-  team: teamSchema,
+  team: z.string().nonempty({ message: 'The team name is required' }),
 })
 
-export function addPlayerByTeam(newPlayer: PlayerStorageDTO, team: string) {
+export function addPlayerByGroup(newPlayer: PlayerStorageDTO, group: string) {
   playerSchema.parse(newPlayer)
+  groupSchema.parse(group)
 
-  const storedPlayers = getPlayersByTeam(team)
+  const storedPlayers = getPlayersByGroup(group)
 
   const playerAlreadyExists = storedPlayers.some(
     (player) => player.name === newPlayer.name,
@@ -30,5 +33,5 @@ export function addPlayerByTeam(newPlayer: PlayerStorageDTO, team: string) {
 
   const newStoredPlayers = JSON.stringify([...storedPlayers, newPlayer])
 
-  localStorage.set(`${PLAYER_COLLECTION}-${team}`, newStoredPlayers)
+  localStorage.set(`${PLAYER_COLLECTION}-${group}`, newStoredPlayers)
 }

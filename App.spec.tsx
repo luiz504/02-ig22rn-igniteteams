@@ -7,6 +7,7 @@ import { theme } from '@/styles'
 
 jest.mock('expo-font')
 describe('App Component', () => {
+  const pageWrapperId = 'wrapper-groups'
   const useFontSpy = () => jest.spyOn(expoFonts, 'useFonts')
   it('should render Loading Component during the resources loading process', async () => {
     useFontSpy().mockReturnValue([false, null])
@@ -14,7 +15,7 @@ describe('App Component', () => {
     render(<App />)
 
     expect(screen.getByTestId('loading-indicator')).toBeVisible()
-    expect(screen.queryByTestId('wrapper')).toBeNull()
+    expect(screen.queryByTestId(pageWrapperId)).toBeNull()
     expect(screen.UNSAFE_queryByType(StatusBar)).toBeNull()
   })
 
@@ -22,7 +23,7 @@ describe('App Component', () => {
     useFontSpy().mockReturnValue([true, null])
 
     render(<App />)
-    const appWrapperElement = screen.getByTestId('wrapper-teams')
+    const appWrapperElement = screen.getByTestId(pageWrapperId)
     const statusBarElement = screen.UNSAFE_getByType(StatusBar)
 
     expect(screen.queryByTestId('loading-indicator')).toBeNull()
