@@ -1,13 +1,12 @@
-import { FC, useMemo, useState } from 'react'
-import { Alert, FlatList } from 'react-native'
+import { FC, useRef, useState } from 'react'
+import { Alert, FlatList, TextInput } from 'react-native'
 import { useRoute } from '@react-navigation/native'
 import { ZodError } from 'zod'
 
 import { addPlayerByGroup } from '@/storage/players/addPlayersByGroup'
+import { getPlayerByGroupAndTeam } from '@/storage/players/getPlayersGetByGroupAndTeam'
 
 import { AppError } from '@/utils/AppError'
-
-import { Form, RowFilters, Counter } from './styles'
 
 import { Header } from '@/components/Header'
 import { Highlight } from '@/components/Highlight'
@@ -19,46 +18,57 @@ import { ListEmptyFB } from '@/components/ListEmptyFB'
 import { Button } from '@/components/Button'
 import { ContainerBase } from '@/components/ContainerBase'
 
-// import { getPlayersByTeam } from '@/storage/players/getPlayersByTeam'
+import { Form, RowFilters, Counter } from './styles'
 
 type RouteParams = {
-  team: {
+  group: {
     name: string
   }
 }
 export const Players: FC = () => {
-  const { team } = useRoute().params as RouteParams
+  const { group } = useRoute().params as RouteParams
 
+  //* Teams
   const [teams] = useState([
     {
-      name: 'Team 1',
-      players: ['Luiz', 'Alexandre', 'Vania', 'Renato', 'Renata', 'Isablea'],
+      name: 'Team A',
     },
-    { name: 'Team 2', players: ['Marco', 'Vini'] },
-    { name: 'Team 3', players: [] },
-    { name: 'Team 4', players: ['Luiz', 'Alexandre'] },
-    { name: 'Team 5', players: ['Marco', 'Vini'] },
-    { name: 'Team 6', players: [] },
+    { name: 'Team B' },
   ])
-  const [activeTeam, setActiveTeam] = useState<string | null>(null)
+  const [activeTeam, setActiveTeam] = useState<string | null>(teams[0].name)
 
-  const playerOfSelectedTeam = useMemo(() => {
-    return teams.find((team) => team.name === activeTeam)?.players || []
-  }, [teams, activeTeam])
+  //* Players
 
+  const [players, setPlayers] = useState(() => {
+    if (!activeTeam || !group.name) return []
+
+    return getPlayerByGroupAndTeam(group.name, activeTeam)
+  })
+
+  const handleSelectTeam = (team: string) => {
+    setActiveTeam(team)
+    const playersByTeam = getPlayerByGroupAndTeam(group.name, team)
+    setPlayers(playersByTeam)
+  }
+
+  //* Add Players
   const [playerName, setPlayerName] = useState('')
+  const inputRef = useRef<TextInput>(null)
 
   const handleAddTeamPlayer = () => {
+    if (!group.name || !activeTeam) return
+
     const newPlayer = {
       name: playerName,
-      team: team.name,
+      team: activeTeam,
     }
 
     try {
-      addPlayerByGroup(newPlayer, team.name)
-
-      // const updatedTeam = getPlayersByTeam(team.name)
-      // console.log('new', updatedTeam)
+      addPlayerByGroup(newPlayer, group.name)
+      const updatedPlayers = getPlayerByGroupAndTeam(group.name, activeTeam)
+      setPlayerName('')
+      inputRef.current?.blur()
+      setPlayers(updatedPlayers)
     } catch (err) {
       if (err instanceof AppError) {
         Alert.alert('New Player', err.message)
@@ -69,19 +79,24 @@ export const Players: FC = () => {
     }
   }
 
-  const hasPlayersOnSelectedTeam = !!playerOfSelectedTeam.length
+  const hasPlayersOnSelectedTeam = !!players.length
+
+  //* Delete Players
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  const handleDeletePlayer = () => {}
 
   return (
     <ContainerBase>
       <Header showBackButton />
 
       <Highlight
-        title={team.name}
-        subtitle="Add the people and split the teams"
+        title={group.name}
+        subtitle="Add players and split the teams"
       />
 
       <Form>
         <Input
+          ref={inputRef}
           style={{ flex: 1 }}
           placeholder="Player Name"
           value={playerName}
@@ -106,7 +121,7 @@ export const Players: FC = () => {
             <Filter
               label={item.name}
               isActive={item.name === activeTeam}
-              onPress={() => setActiveTeam(item.name)}
+              onPress={() => handleSelectTeam(item.name)}
             />
           )}
           horizontal
@@ -116,17 +131,16 @@ export const Players: FC = () => {
       </RowFilters>
 
       <FlatList
-        data={playerOfSelectedTeam}
+        data={players}
         contentContainerStyle={[
-          { rowGap: 12, paddingBottom: 32 },
+          { rowGap: 12, paddingBottom: 32, backgroundColor: 'red' },
           !hasPlayersOnSelectedTeam && {
             flex: 1,
           },
         ]}
-        keyExtractor={(item) => item}
+        keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
-          <PlayerCard label={item} onDeletePress={() => {}} />
+          <PlayerCard label={item.name} onDeletePress={handleDeletePlayer} />
         )}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={() => (

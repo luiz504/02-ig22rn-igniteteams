@@ -28,7 +28,7 @@ describe('Players Screen', () => {
   const useMockedUseRoute = () =>
     jest
       .mocked(useRoute)
-      .mockReturnValue({ params: { team: initialTeam } } as any)
+      .mockReturnValue({ params: { group: initialTeam } } as any)
 
   const useAlertSpy = () => jest.spyOn(Alert, 'alert')
 

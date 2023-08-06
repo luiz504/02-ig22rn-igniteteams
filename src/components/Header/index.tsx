@@ -13,7 +13,7 @@ export const Header: FC<HeaderProps> = ({ showBackButton = false }) => {
   const navigation = useNavigation()
 
   const handleGoHome = () => {
-    navigation.navigate('teams')
+    navigation.navigate('groups')
   }
 
   return (

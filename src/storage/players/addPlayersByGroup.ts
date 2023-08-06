@@ -30,8 +30,10 @@ export function addPlayerByGroup(newPlayer: PlayerStorageDTO, group: string) {
   if (playerAlreadyExists) {
     throw new AppError('This Player already included in the Team.')
   }
+  const updatedGroup = [...storedPlayers, newPlayer]
 
-  const newStoredPlayers = JSON.stringify([...storedPlayers, newPlayer])
-
-  localStorage.set(`${PLAYER_COLLECTION}-${group}`, newStoredPlayers)
+  localStorage.set(
+    `${PLAYER_COLLECTION}-${group}`,
+    JSON.stringify(updatedGroup),
+  )
 }

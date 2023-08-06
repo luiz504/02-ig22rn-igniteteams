@@ -52,6 +52,6 @@ describe('Header Component', () => {
     fireEvent.press(btnNavigationElement)
 
     expect(navigateMock).toBeCalledTimes(1)
-    expect(navigateMock).toBeCalledWith('teams')
+    expect(navigateMock).toBeCalledWith('groups')
   })
 })
