@@ -35,6 +35,8 @@ export const Groups: FC = () => {
     navigation.navigate('new-group')
   }
 
+  const isGroupEmpty = !groups.length
+
   return (
     <>
       <ContainerBase testID="wrapper-groups">
@@ -54,7 +56,7 @@ export const Groups: FC = () => {
               testID={`group-card-${item}`}
             />
           )}
-          contentContainerStyle={{ rowGap: 12 }}
+          contentContainerStyle={[{ rowGap: 12 }, isGroupEmpty && { flex: 1 }]}
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={
             <ListEmptyFB message="How about creating the first group?" />

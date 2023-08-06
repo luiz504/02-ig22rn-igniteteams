@@ -81,7 +81,7 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.igniteteams"
+    namespace 'com.igniteteams'
     defaultConfig {
         applicationId 'com.igniteteams'
         minSdkVersion rootProject.ext.minSdkVersion

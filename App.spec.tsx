@@ -35,6 +35,6 @@ describe('App Component', () => {
       theme.colors['gray-600'],
     )
     expect(statusBarElement).toHaveProp('translucent', false)
-    expect(statusBarElement).toHaveProp('style', 'inverted')
+    expect(statusBarElement).toHaveProp('style', 'light')
   })
 })

@@ -22,7 +22,7 @@ export default function App() {
       {fontsLoaded && (
         <>
           <StatusBar
-            style="inverted"
+            style="light"
             translucent={false}
             backgroundColor={theme.colors['gray-600']}
           />

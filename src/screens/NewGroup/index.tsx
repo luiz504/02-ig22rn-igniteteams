@@ -1,4 +1,4 @@
-import { Alert, TextInput } from 'react-native'
+import { Alert, KeyboardAvoidingView, TextInput } from 'react-native'
 import { FC, useRef, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { ZodError } from 'zod'
@@ -7,13 +7,13 @@ import { createGroup } from '@/storage/groups/createGroup'
 
 import { AppError } from '@/utils/AppError'
 
-import { Content, Icon } from './styles'
-
 import { Header } from '@/components/Header'
 import { Highlight } from '@/components/Highlight'
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
 import { ContainerBase } from '@/components/ContainerBase'
+
+import { Content, Icon } from './styles'
 
 export const NewGroup: FC = () => {
   const inputRef = useRef<TextInput>(null)
@@ -65,12 +65,14 @@ export const NewGroup: FC = () => {
           onSubmitEditing={handleCreateGroup}
         />
 
-        <Button
-          style={{ marginVertical: 20 }}
-          label="Create"
-          onPress={handleCreateGroup}
-          testID="submit-btn"
-        />
+        <KeyboardAvoidingView keyboardVerticalOffset={170} behavior="padding">
+          <Button
+            style={{ marginVertical: 20 }}
+            label="Create"
+            onPress={handleCreateGroup}
+            testID="submit-btn"
+          />
+        </KeyboardAvoidingView>
       </Content>
     </ContainerBase>
   )
