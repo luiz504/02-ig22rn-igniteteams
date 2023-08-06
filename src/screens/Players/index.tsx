@@ -6,6 +6,7 @@ import { ZodError } from 'zod'
 import { addPlayerByGroup } from '@/storage/players/addPlayerByGroup'
 import { getPlayerByGroupAndTeam } from '@/storage/players/getPlayersGetByGroupAndTeam'
 import { deletePlayerByGroup } from '@/storage/players/deletePlayerByGroup'
+import { deleteGroupByName } from '@/storage/groups/deleteGroupByName'
 
 import { AppError } from '@/utils/AppError'
 
@@ -20,7 +21,6 @@ import { Button } from '@/components/Button'
 import { ContainerBase } from '@/components/ContainerBase'
 
 import { Form, RowFilters, Counter } from './styles'
-import { deleteGroupByName } from '@/storage/groups/deleteGroupByName'
 
 type RouteParams = {
   group: {
@@ -167,7 +167,9 @@ export const Players: FC = () => {
           horizontal
         />
 
-        <Counter>2</Counter>
+        {!!players.length && (
+          <Counter testID="players-counter">{players.length}</Counter>
+        )}
       </RowFilters>
 
       <FlatList
