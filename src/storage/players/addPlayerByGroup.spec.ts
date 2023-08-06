@@ -1,8 +1,8 @@
 import { localStorage } from '@/libs/mmkv'
-import { addPlayerByGroup } from './addPlayersByGroup'
+import { addPlayerByGroup } from './addPlayerByGroup'
 import { PLAYER_COLLECTION } from '../config'
 
-describe('addPlayersByGroup function', () => {
+describe('addPlayerByGroup function', () => {
   const player = {
     name: 'John Doe',
     team: 'StarField',

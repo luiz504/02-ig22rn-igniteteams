@@ -3,8 +3,9 @@ import { Alert, FlatList, TextInput } from 'react-native'
 import { useRoute } from '@react-navigation/native'
 import { ZodError } from 'zod'
 
-import { addPlayerByGroup } from '@/storage/players/addPlayersByGroup'
+import { addPlayerByGroup } from '@/storage/players/addPlayerByGroup'
 import { getPlayerByGroupAndTeam } from '@/storage/players/getPlayersGetByGroupAndTeam'
+import { removePlayerByGroup } from '@/storage/players/removePlayerByGroup'
 
 import { AppError } from '@/utils/AppError'
 
@@ -45,10 +46,19 @@ export const Players: FC = () => {
     return getPlayerByGroupAndTeam(group.name, activeTeam)
   })
 
+  const fetchPlayersByTeam = (team: string | null) => {
+    if (!team) return
+    try {
+      const players = getPlayerByGroupAndTeam(group.name, team)
+      setPlayers(players)
+    } catch (err) {
+      Alert.alert('Fetch Players', 'Fail to fetch players from team.')
+    }
+  }
+
   const handleSelectTeam = (team: string) => {
     setActiveTeam(team)
-    const playersByTeam = getPlayerByGroupAndTeam(group.name, team)
-    setPlayers(playersByTeam)
+    fetchPlayersByTeam(team)
   }
 
   //* Add Players
@@ -83,7 +93,15 @@ export const Players: FC = () => {
 
   //* Delete Players
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const handleDeletePlayer = () => {}
+  const handleDeletePlayer = (playerName: string) => {
+    try {
+      removePlayerByGroup(playerName, group.name)
+
+      fetchPlayersByTeam(activeTeam)
+    } catch (err) {
+      Alert.alert('Remove Player', 'Failed to remove this player')
+    }
+  }
 
   return (
     <ContainerBase>
@@ -133,14 +151,17 @@ export const Players: FC = () => {
       <FlatList
         data={players}
         contentContainerStyle={[
-          { rowGap: 12, paddingBottom: 32, backgroundColor: 'red' },
+          { rowGap: 12, paddingBottom: 32 },
           !hasPlayersOnSelectedTeam && {
             flex: 1,
           },
         ]}
         keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
-          <PlayerCard label={item.name} onDeletePress={handleDeletePlayer} />
+          <PlayerCard
+            label={item.name}
+            onDeletePress={() => handleDeletePlayer(item.name)}
+          />
         )}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={() => (
