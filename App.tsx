@@ -1,13 +1,15 @@
+import { useLayoutEffect } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { useFonts } from 'expo-font'
+import * as SplashScreen from 'expo-splash-screen'
 
 import { ThemeProvider } from '@/providers/ThemeProvider'
 
 import { theme } from '@/styles'
 
-import { Loading } from '@/components/Loading'
-
 import { Routes } from '@/routes'
+
+SplashScreen.preventAutoHideAsync()
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -15,11 +17,15 @@ export default function App() {
     'Roboto-Bold': require('./assets/fonts/Roboto-Bold.ttf'),
   })
 
+  useLayoutEffect(() => {
+    fontsLoaded && SplashScreen.hideAsync()
+  }, [fontsLoaded])
+
+  if (!fontsLoaded) return null
+
   return (
     <ThemeProvider>
-      {!fontsLoaded && <Loading />}
-
-      {fontsLoaded && (
+      {
         <>
           <StatusBar
             style="light"
@@ -28,7 +34,7 @@ export default function App() {
           />
           <Routes />
         </>
-      )}
+      }
     </ThemeProvider>
   )
 }
