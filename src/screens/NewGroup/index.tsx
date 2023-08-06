@@ -62,6 +62,7 @@ export const NewGroup: FC = () => {
           onFocus={() => setError('')}
           hasError={!!error}
           testID="input-new-group"
+          onSubmitEditing={handleCreateGroup}
         />
 
         <Button

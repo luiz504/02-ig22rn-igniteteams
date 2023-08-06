@@ -10,14 +10,14 @@ const playerNameSchema = z
 const groupNameSchema = z
   .string()
   .nonempty({ message: 'Group name is required' })
-export function removePlayerByGroup(playerName: string, groupName: string) {
+export function deletePlayerByGroup(playerName: string, groupName: string) {
   playerNameSchema.parse(playerName)
   groupNameSchema.parse(groupName)
 
   const storedGroup = getPlayersByGroup(groupName)
 
   if (!storedGroup.length) {
-    throw new AppError('Unable to remove player from a empty group')
+    throw new AppError('Unable to delete player from a empty group')
   }
 
   const updatedGroup = storedGroup.filter((p) => p.name !== playerName)

@@ -1,11 +1,11 @@
 import { FC, useRef, useState } from 'react'
 import { Alert, FlatList, TextInput } from 'react-native'
-import { useRoute } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { ZodError } from 'zod'
 
 import { addPlayerByGroup } from '@/storage/players/addPlayerByGroup'
 import { getPlayerByGroupAndTeam } from '@/storage/players/getPlayersGetByGroupAndTeam'
-import { removePlayerByGroup } from '@/storage/players/removePlayerByGroup'
+import { deletePlayerByGroup } from '@/storage/players/deletePlayerByGroup'
 
 import { AppError } from '@/utils/AppError'
 
@@ -20,6 +20,7 @@ import { Button } from '@/components/Button'
 import { ContainerBase } from '@/components/ContainerBase'
 
 import { Form, RowFilters, Counter } from './styles'
+import { deleteGroupByName } from '@/storage/groups/deleteGroupByName'
 
 type RouteParams = {
   group: {
@@ -28,7 +29,7 @@ type RouteParams = {
 }
 export const Players: FC = () => {
   const { group } = useRoute().params as RouteParams
-
+  const navigator = useNavigation()
   //* Teams
   const [teams] = useState([
     {
@@ -95,12 +96,32 @@ export const Players: FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   const handleDeletePlayer = (playerName: string) => {
     try {
-      removePlayerByGroup(playerName, group.name)
+      deletePlayerByGroup(playerName, group.name)
 
       fetchPlayersByTeam(activeTeam)
     } catch (err) {
-      Alert.alert('Remove Player', 'Failed to remove this player')
+      Alert.alert('Delete Player', 'Failed to delete this player')
     }
+  }
+
+  const groupRemove = () => {
+    try {
+      deleteGroupByName(group.name)
+      navigator.navigate('groups')
+    } catch (err) {
+      Alert.alert('Delete Player', 'Failed to delete this player')
+    }
+  }
+
+  const handleDeleteGroup = () => {
+    Alert.alert('Delete Action', 'Are you sure about deleting this Group?', [
+      {
+        text: 'Yes, Delete it',
+        onPress: groupRemove,
+        style: 'destructive',
+      },
+      { text: 'Cancel' },
+    ])
   }
 
   return (
@@ -121,6 +142,7 @@ export const Players: FC = () => {
           onChangeText={(value) => setPlayerName(value)}
           testID="player-name-input"
           onSubmitEditing={handleAddTeamPlayer}
+          keyboardAppearance="dark"
         />
 
         <ButtonIcon
@@ -171,9 +193,10 @@ export const Players: FC = () => {
 
       <Button
         style={{ marginBottom: 24 }}
-        label="Remove Team"
+        label="Delete Group"
         type="secondary"
-        testID={'remove-team-btn'}
+        testID={'remove-group-btn'}
+        onPress={handleDeleteGroup}
       />
     </ContainerBase>
   )

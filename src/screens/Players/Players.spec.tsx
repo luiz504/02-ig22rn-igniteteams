@@ -23,7 +23,7 @@ describe('Players Screen', () => {
   }
   const inputID = 'player-name-input'
   const submitBtnID = 'submit-btn'
-  const btnDeleteTeam = 'remove-team-btn'
+  const btnDeleteGroup = 'remove-group-btn'
 
   const useMockedUseRoute = () =>
     jest
@@ -38,7 +38,7 @@ describe('Players Screen', () => {
 
     expect(screen.getByTestId(inputID)).toBeOnTheScreen()
     expect(screen.getByTestId(submitBtnID)).toBeOnTheScreen()
-    expect(screen.getByTestId(btnDeleteTeam)).toBeOnTheScreen()
+    expect(screen.getByTestId(btnDeleteGroup)).toBeOnTheScreen()
   })
 
   it('should throw an Alert when the player name is not valid', () => {
