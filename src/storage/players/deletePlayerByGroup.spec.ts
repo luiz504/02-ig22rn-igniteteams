@@ -1,7 +1,8 @@
 import { localStorage } from '@/libs/mmkv'
 import { deletePlayerByGroup } from './deletePlayerByGroup'
-import { PlayerStorageDTO } from './PlayerStorageDTO'
+
 import { PLAYER_COLLECTION } from '../config'
+import { PlayerStorageDTO } from '../models/PlayerStorageDTO'
 
 describe('deletePlayerByGroup Method', () => {
   const initialGroup: PlayerStorageDTO[] = [

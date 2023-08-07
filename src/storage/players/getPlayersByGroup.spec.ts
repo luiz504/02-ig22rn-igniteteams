@@ -1,6 +1,7 @@
 import { localStorage } from '@/libs/mmkv'
-import { PlayerStorageDTO } from './PlayerStorageDTO'
+
 import { getPlayersByGroup } from './getPlayersByGroup'
+import { PlayerStorageDTO } from '../models/PlayerStorageDTO'
 
 describe('getPlayersByTeam function', () => {
   it('should return the correct players from a Group', () => {

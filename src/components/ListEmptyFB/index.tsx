@@ -4,10 +4,11 @@ import { Container, Message } from './styles'
 
 type ListEmptyFBProps = {
   message: string
+  testID?: string
 }
-export const ListEmptyFB: FC<ListEmptyFBProps> = ({ message }) => {
+export const ListEmptyFB: FC<ListEmptyFBProps> = ({ message, testID }) => {
   return (
-    <Container>
+    <Container testID={testID}>
       <Message> {message} </Message>
     </Container>
   )

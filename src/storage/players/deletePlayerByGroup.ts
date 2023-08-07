@@ -1,18 +1,15 @@
-import { localStorage } from '@/libs/mmkv'
-import { getPlayersByGroup } from './getPlayersByGroup'
-import { PLAYER_COLLECTION } from '../config'
-import { AppError } from '@/utils/AppError'
 import { z } from 'zod'
+
+import { getPlayersByGroup } from './getPlayersByGroup'
+
+import { AppError } from '@/utils/AppError'
+import { setPlayersStored } from '../utils/playersHelpers'
 
 const playerNameSchema = z
   .string()
-  .nonempty({ message: 'Player name is required' })
-const groupNameSchema = z
-  .string()
-  .nonempty({ message: 'Group name is required' })
+  .nonempty({ message: 'playerName is required' })
 export function deletePlayerByGroup(playerName: string, groupName: string) {
   playerNameSchema.parse(playerName)
-  groupNameSchema.parse(groupName)
 
   const storedGroup = getPlayersByGroup(groupName)
 
@@ -26,7 +23,5 @@ export function deletePlayerByGroup(playerName: string, groupName: string) {
     throw new AppError('This player does not exist in the group')
   }
 
-  const updatedGroupStringified = JSON.stringify(updatedGroup)
-
-  localStorage.set(`${PLAYER_COLLECTION}-${groupName}`, updatedGroupStringified)
+  setPlayersStored(groupName, updatedGroup)
 }

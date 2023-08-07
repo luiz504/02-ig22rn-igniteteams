@@ -25,9 +25,9 @@ export const NewGroup: FC = () => {
 
   const handleCreateGroup = () => {
     try {
-      const newTeam = createGroup(groupName)
+      createGroup(groupName)
 
-      navigation.navigate('players', { group: { name: newTeam } })
+      navigation.navigate('players', { group: { name: groupName } })
     } catch (err) {
       if (err instanceof ZodError) {
         inputRef.current?.blur()

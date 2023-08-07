@@ -1,6 +1,7 @@
 import { localStorage } from '@/libs/mmkv'
-import { PlayerStorageDTO } from './PlayerStorageDTO'
-import { getPlayerByGroupAndTeam } from './getPlayersGetByGroupAndTeam'
+
+import { PlayerStorageDTO } from '../models/PlayerStorageDTO'
+import { getPlayerByGroupAndTeam } from './getPlayersByGroupAndTeam'
 
 describe('getPlayerByGroupAndTeam', () => {
   const mockPlayerGroup: PlayerStorageDTO[] = [

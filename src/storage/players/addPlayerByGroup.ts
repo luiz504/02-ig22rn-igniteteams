@@ -1,27 +1,13 @@
-import { z } from 'zod'
-
-import { localStorage } from '@/libs/mmkv'
-import { PlayerStorageDTO } from './PlayerStorageDTO'
-import { PLAYER_COLLECTION } from '../config'
 import { getPlayersByGroup } from './getPlayersByGroup'
 import { AppError } from '@/utils/AppError'
+import { setPlayersStored } from '../utils/playersHelpers'
+import { PlayerStorageDTO } from '../models/PlayerStorageDTO'
 
-const groupSchema = z
-  .string()
-  .nonempty({ message: 'The group name is required' })
-
-const playerSchema = z.object({
-  name: z
-    .string()
-    .min(3, { message: 'The player name must have at least 3 characters' }),
-  team: z.string().nonempty({ message: 'The team name is required' }),
-})
-
-export function addPlayerByGroup(newPlayer: PlayerStorageDTO, group: string) {
-  playerSchema.parse(newPlayer)
-  groupSchema.parse(group)
-
-  const storedPlayers = getPlayersByGroup(group)
+export function addPlayerByGroup(
+  newPlayer: PlayerStorageDTO,
+  groupName: string,
+) {
+  const storedPlayers = getPlayersByGroup(groupName)
 
   const playerAlreadyExists = storedPlayers.some(
     (player) => player.name === newPlayer.name,
@@ -32,8 +18,5 @@ export function addPlayerByGroup(newPlayer: PlayerStorageDTO, group: string) {
   }
   const updatedGroup = [...storedPlayers, newPlayer]
 
-  localStorage.set(
-    `${PLAYER_COLLECTION}-${group}`,
-    JSON.stringify(updatedGroup),
-  )
+  setPlayersStored(groupName, updatedGroup)
 }

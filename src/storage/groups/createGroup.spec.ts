@@ -2,17 +2,31 @@ import { localStorage } from '@/libs/mmkv'
 import { GROUP_COLLECTION } from '../config'
 import { createGroup } from './createGroup'
 
+import { setGroupsStored } from '../utils/groupsHelpers'
+
 describe('create Group Function', () => {
+  const initialGroups = ['Group  1', 'Group 2']
   beforeEach(() => {
+    jest.clearAllMocks()
     localStorage.clearAll()
   })
+
+  const useLocalStorageSetSpy = () => jest.spyOn(localStorage, 'set')
+
   it('should create a Group and save in the localStorage', () => {
-    expect(localStorage.getString(GROUP_COLLECTION)).toBeUndefined()
+    setGroupsStored(initialGroups)
+
+    const localStorageSetSpy = useLocalStorageSetSpy()
+
     const groupName = 'Fake Group'
 
-    const createdGroup = createGroup(groupName)
+    createGroup(groupName)
 
-    expect(createdGroup).toBe(groupName)
+    expect(localStorageSetSpy).toBeCalledTimes(1)
+    expect(localStorageSetSpy).toBeCalledWith(
+      GROUP_COLLECTION,
+      JSON.stringify([...initialGroups, groupName]),
+    )
   })
   it('should throw an error when passing wrong name format', () => {
     expect(() => createGroup('')).toThrow()
@@ -27,9 +41,8 @@ describe('create Group Function', () => {
   })
 
   it('should throw an error when trying to create a group with a name already in use', () => {
-    const savedGroupsMock = ['t13']
-    localStorage.set(GROUP_COLLECTION, JSON.stringify(savedGroupsMock))
+    setGroupsStored(initialGroups)
 
-    expect(() => createGroup(savedGroupsMock[0])).toThrow()
+    expect(() => createGroup(initialGroups[0])).toThrow()
   })
 })

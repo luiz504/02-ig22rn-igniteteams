@@ -1,12 +1,14 @@
 import { z } from 'zod'
-import { GROUP_COLLECTION, PLAYER_COLLECTION } from '../config'
+
 import { getAllGroups } from './getallGroups'
 import { AppError } from '@/utils/AppError'
-import { localStorage } from '@/libs/mmkv'
+
+import { setGroupsStored } from '../utils/groupsHelpers'
+import { deletePlayersStored } from '../utils/playersHelpers'
 
 const groupNameSchema = z
   .string()
-  .nonempty({ message: 'Group name is required' })
+  .nonempty({ message: 'groupName is required' })
 export function deleteGroupByName(groupName: string) {
   groupNameSchema.parse(groupName)
 
@@ -18,6 +20,6 @@ export function deleteGroupByName(groupName: string) {
     throw new AppError('Informed Group does not exist')
   }
 
-  localStorage.set(GROUP_COLLECTION, JSON.stringify(filteredGroups))
-  localStorage.delete(`${PLAYER_COLLECTION}-${groupName}`)
+  setGroupsStored(filteredGroups)
+  deletePlayersStored(groupName)
 }

@@ -1,9 +1,8 @@
-import { localStorage } from '@/libs/mmkv'
-import { PLAYER_COLLECTION } from '../config'
-import { PlayerStorageDTO } from './PlayerStorageDTO'
+import { PlayerStorageDTO } from '../models/PlayerStorageDTO'
+import { getPlayersStored } from '../utils/playersHelpers'
 
-export function getPlayersByGroup(group: string) {
-  const storedTeam = localStorage.getString(`${PLAYER_COLLECTION}-${group}`)
+export function getPlayersByGroup(groupName: string) {
+  const storedTeam = getPlayersStored(groupName)
 
   const players: PlayerStorageDTO[] = storedTeam ? JSON.parse(storedTeam) : []
 

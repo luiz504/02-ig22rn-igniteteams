@@ -1,11 +1,11 @@
-import { GROUP_COLLECTION } from '../config'
 import { z } from 'zod'
-import { localStorage } from '@/libs/mmkv'
+
+import { getGroupsStored } from '../utils/groupsHelpers'
 
 const groupSchema = z.array(z.string())
 export function getAllGroups() {
   try {
-    const storedGroups = localStorage.getString(GROUP_COLLECTION)
+    const storedGroups = getGroupsStored()
 
     if (!storedGroups) return []
 

@@ -15,7 +15,8 @@ describe('addPlayerByGroup function', () => {
       .spyOn(localStorage, 'getString')
       .mockReturnValueOnce(JSON.stringify(initialPlayers))
     const localStorageSetSpy = jest.spyOn(localStorage, 'set')
-    expect(() => addPlayerByGroup(player, groupName)).not.toThrow()
+
+    addPlayerByGroup(player, groupName)
 
     expect(localStorageSetSpy).toBeCalledTimes(1)
     expect(localStorageSetSpy).toBeCalledWith(

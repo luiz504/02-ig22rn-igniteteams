@@ -4,7 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { ZodError } from 'zod'
 
 import { addPlayerByGroup } from '@/storage/players/addPlayerByGroup'
-import { getPlayerByGroupAndTeam } from '@/storage/players/getPlayersGetByGroupAndTeam'
+import { getPlayerByGroupAndTeam } from '@/storage/players/getPlayersByGroupAndTeam'
 import { deletePlayerByGroup } from '@/storage/players/deletePlayerByGroup'
 import { deleteGroupByName } from '@/storage/groups/deleteGroupByName'
 
@@ -22,6 +22,8 @@ import { ContainerBase } from '@/components/ContainerBase'
 
 import { Form, RowFilters, Counter } from './styles'
 
+import { TEAMS } from './constants'
+
 type RouteParams = {
   group: {
     name: string
@@ -31,24 +33,16 @@ export const Players: FC = () => {
   const { group } = useRoute().params as RouteParams
   const navigator = useNavigation()
   //* Teams
-  const [teams] = useState([
-    {
-      name: 'Team A',
-    },
-    { name: 'Team B' },
-  ])
-  const [activeTeam, setActiveTeam] = useState<string | null>(teams[0].name)
+  const [teams] = useState(TEAMS)
+  const [activeTeam, setActiveTeam] = useState<string>(teams[0].name)
 
   //* Players
 
   const [players, setPlayers] = useState(() => {
-    if (!activeTeam || !group.name) return []
-
     return getPlayerByGroupAndTeam(group.name, activeTeam)
   })
 
-  const fetchPlayersByTeam = (team: string | null) => {
-    if (!team) return
+  const fetchPlayersByTeam = (team: string) => {
     try {
       const players = getPlayerByGroupAndTeam(group.name, team)
       setPlayers(players)
@@ -67,8 +61,6 @@ export const Players: FC = () => {
   const inputRef = useRef<TextInput>(null)
 
   const handleAddTeamPlayer = () => {
-    if (!group.name || !activeTeam) return
-
     const newPlayer = {
       name: playerName,
       team: activeTeam,
@@ -77,15 +69,17 @@ export const Players: FC = () => {
     try {
       addPlayerByGroup(newPlayer, group.name)
       const updatedPlayers = getPlayerByGroupAndTeam(group.name, activeTeam)
+
       setPlayerName('')
       inputRef.current?.blur()
       setPlayers(updatedPlayers)
     } catch (err) {
       if (err instanceof AppError) {
         Alert.alert('New Player', err.message)
-      }
-      if (err instanceof ZodError) {
+      } else if (err instanceof ZodError) {
         Alert.alert('New Player', err.errors[0].message)
+      } else {
+        Alert.alert('New Player', 'Fail to add new player')
       }
     }
   }
@@ -162,6 +156,7 @@ export const Players: FC = () => {
               label={item.name}
               isActive={item.name === activeTeam}
               onPress={() => handleSelectTeam(item.name)}
+              testID={`team-selector`}
             />
           )}
           horizontal
@@ -185,11 +180,15 @@ export const Players: FC = () => {
           <PlayerCard
             label={item.name}
             onDeletePress={() => handleDeletePlayer(item.name)}
+            testID="player-card"
           />
         )}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={() => (
-          <ListEmptyFB message="There are no member on this team" />
+          <ListEmptyFB
+            message="There are no member on this team"
+            testID="empty-feedback"
+          />
         )}
       />
 
