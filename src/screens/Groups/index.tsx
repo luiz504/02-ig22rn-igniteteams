@@ -14,21 +14,10 @@ import { ContainerBase } from '@/components/ContainerBase'
 export const Groups: FC = () => {
   const [groups, setGroups] = useState<string[]>([])
 
-  useFocusEffect(
-    useCallback(() => {
-      const teams = getAllGroups()
-      setGroups(teams)
-    }, []),
-  )
-
   const navigation = useNavigation()
 
   const handleNavigateToPlayersScreen = (groupName: string) => {
-    const teamExists = groups.includes(groupName)
-
-    if (teamExists) {
-      navigation.navigate('players', { group: { name: groupName } })
-    }
+    navigation.navigate('players', { group: { name: groupName } })
   }
 
   const handleNewGroup = () => {
@@ -36,6 +25,13 @@ export const Groups: FC = () => {
   }
 
   const isGroupEmpty = !groups.length
+
+  useFocusEffect(
+    useCallback(() => {
+      const storedGroup = getAllGroups()
+      setGroups(storedGroup)
+    }, []),
+  )
 
   return (
     <>

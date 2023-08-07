@@ -13,6 +13,7 @@ import { PLayersScreenCommons } from './common'
 import { TEAMS } from '../constants'
 
 import { Players } from '..'
+import { Alert } from 'react-native'
 
 const { groupData, storedPlayers, playerCardID, playersCounterID } =
   PLayersScreenCommons
@@ -24,7 +25,7 @@ jest.mock('@react-navigation/native', () => {
   }
 })
 
-describe('Delete Player Action integration', () => {
+describe('Players Screen => Delete Player Action integration', () => {
   const useMockedUseRoute = () =>
     jest
       .mocked(useRoute)
@@ -37,7 +38,7 @@ describe('Delete Player Action integration', () => {
     localStorage.clearAll()
   })
 
-  it('should delete a player correctly', () => {
+  it('should delete a player correctly', async () => {
     setPlayersStored(groupData.name, storedPlayers)
     const initialStoredPlayerTeam0Count = storedPlayers.filter(
       (p) => p.team === TEAMS[0].name,
@@ -73,6 +74,7 @@ describe('Delete Player Action integration', () => {
     fireEvent.press(deletePlayersBtns[0])
 
     // Assert
+
     expect(deletePlayerByGroupSpy).toHaveBeenCalledTimes(1)
     expect(getPlayerByGroupAndTeamSpy).toHaveBeenCalledTimes(1)
 
@@ -82,5 +84,52 @@ describe('Delete Player Action integration', () => {
     expect(counterElement).toHaveTextContent(
       String(initialStoredPlayerTeam0Count - 1),
     )
+  })
+
+  it('should trigger an Alert when the player delete action fails', () => {
+    const alertSpy = jest.spyOn(Alert, 'alert')
+
+    jest
+      .spyOn(DeletePlayerModule, 'deletePlayerByGroup')
+      .mockImplementationOnce(() => {
+        throw new Error('any error')
+      })
+    setPlayersStored(groupData.name, storedPlayers)
+
+    renderWithThemeAndNavigation(<Players />)
+
+    const deletePlayersBtns = screen.getAllByTestId(
+      `${playerCardID}-delete-btn`,
+    )
+
+    // Act
+    fireEvent.press(deletePlayersBtns[0])
+
+    expect(alertSpy).toBeCalledTimes(1)
+    expect(alertSpy).toBeCalledWith(expect.any(String), expect.any(String))
+  })
+
+  it('should trigger an Alert when the player delete action fails', () => {
+    const alertSpy = jest.spyOn(Alert, 'alert')
+
+    setPlayersStored(groupData.name, storedPlayers)
+
+    renderWithThemeAndNavigation(<Players />)
+
+    jest
+      .spyOn(GetPlayersByGroupAndTeamModule, 'getPlayerByGroupAndTeam')
+      .mockImplementationOnce(() => {
+        throw new Error('any error')
+      })
+
+    const deletePlayersBtns = screen.getAllByTestId(
+      `${playerCardID}-delete-btn`,
+    )
+
+    // Act
+    fireEvent.press(deletePlayersBtns[0])
+
+    expect(alertSpy).toBeCalledTimes(1)
+    expect(alertSpy).toBeCalledWith(expect.any(String), expect.any(String))
   })
 })

@@ -45,6 +45,7 @@ export const Players: FC = () => {
   const fetchPlayersByTeam = (team: string) => {
     try {
       const players = getPlayerByGroupAndTeam(group.name, team)
+
       setPlayers(players)
     } catch (err) {
       Alert.alert('Fetch Players', 'Fail to fetch players from team.')
@@ -74,20 +75,21 @@ export const Players: FC = () => {
       inputRef.current?.blur()
       setPlayers(updatedPlayers)
     } catch (err) {
+      let errorMsg = 'Fail to add a new player'
+
       if (err instanceof AppError) {
-        Alert.alert('New Player', err.message)
-      } else if (err instanceof ZodError) {
-        Alert.alert('New Player', err.errors[0].message)
-      } else {
-        Alert.alert('New Player', 'Fail to add new player')
+        errorMsg = err.message
       }
+      if (err instanceof ZodError) {
+        errorMsg = err.errors[0].message
+      }
+      Alert.alert('New Player', errorMsg)
     }
   }
 
   const hasPlayersOnSelectedTeam = !!players.length
 
   //* Delete Players
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   const handleDeletePlayer = (playerName: string) => {
     try {
       deletePlayerByGroup(playerName, group.name)
@@ -98,12 +100,13 @@ export const Players: FC = () => {
     }
   }
 
+  //* Delete Group
   const groupRemove = () => {
     try {
       deleteGroupByName(group.name)
       navigator.navigate('groups')
     } catch (err) {
-      Alert.alert('Delete Player', 'Failed to delete this player')
+      Alert.alert('Delete Player', 'Failed to delete this group')
     }
   }
 
@@ -196,7 +199,7 @@ export const Players: FC = () => {
         style={{ marginBottom: 24 }}
         label="Delete Group"
         type="secondary"
-        testID={'remove-group-btn'}
+        testID={'delete-group-btn'}
         onPress={handleDeleteGroup}
       />
     </ContainerBase>

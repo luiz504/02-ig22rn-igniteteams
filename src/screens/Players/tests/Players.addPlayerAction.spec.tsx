@@ -3,7 +3,6 @@ import { fireEvent, screen, waitFor } from '@testing-library/react-native'
 
 import { setPlayersStored } from '@/storage/utils/playersHelpers'
 import * as GetPlayersByGroupAndTeamModule from '@/storage/players/getPlayersByGroupAndTeam'
-import * as AddPlayerModule from '@/storage/players/addPlayerByGroup'
 
 import { renderWithThemeAndNavigation } from '@/utils/test-utils'
 
@@ -17,6 +16,7 @@ import { Alert } from 'react-native'
 
 const {
   groupData,
+  team0PLayers,
   storedPlayers,
   inputID,
   submitBtnID,
@@ -30,7 +30,7 @@ jest.mock('@react-navigation/native', () => {
     useRoute: jest.fn(),
   }
 })
-describe('Add Player Action integration', () => {
+describe('Players Screen => Add Player Action integration', () => {
   const useMockedUseRoute = () =>
     jest
       .mocked(useRoute)
@@ -103,15 +103,8 @@ describe('Add Player Action integration', () => {
     expect(alertSpy).toBeCalledWith(expect.any(String), expect.any(String))
   })
   it('should throw an Alert when the player name is already in a team', () => {
-    jest
-      .spyOn(AddPlayerModule, 'addPlayerByGroup')
-      .mockImplementationOnce(() => {
-        throw new Error()
-      })
+    setPlayersStored(groupData.name, storedPlayers)
 
-    jest
-      .spyOn(localStorage, 'getString')
-      .mockReturnValue(JSON.stringify([{ name: 'KO', team: groupData.name }]))
     const alertSpy = useAlertSpy()
 
     renderWithThemeAndNavigation(<Players />)
@@ -120,7 +113,7 @@ describe('Add Player Action integration', () => {
     const submitBtnElement = screen.getByTestId(submitBtnID)
 
     // Act
-    fireEvent.changeText(inputElement, 'KO')
+    fireEvent.changeText(inputElement, team0PLayers[0].name)
     fireEvent.press(submitBtnElement)
     // Assert
     expect(alertSpy).toBeCalledTimes(1)

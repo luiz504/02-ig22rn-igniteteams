@@ -5,6 +5,7 @@ import { NewGroup } from '.'
 
 import { renderWithThemeAndNavigation } from '@/utils/test-utils'
 import { localStorage } from '@/libs/mmkv'
+import { theme } from '@/styles'
 
 jest.mock('@react-navigation/native', () => {
   return {
@@ -65,6 +66,19 @@ describe('NewGroup Component', () => {
       expect.any(String),
       expect.any(String),
     )
+
+    const InputElement = screen.getByTestId(inputID)
+    expect(InputElement).toHaveStyle({
+      borderTopColor: theme.colors['red-700'],
+    })
+
+    // Act clean error when focus the input again
+    fireEvent(InputElement, 'focus')
+    fireEvent(InputElement, 'blur')
+
+    expect(screen.getByTestId(inputID)).toHaveStyle({
+      borderTopColor: theme.colors['gray-700'],
+    })
   })
 
   it('should navigate to the Players screen passing the group created', () => {

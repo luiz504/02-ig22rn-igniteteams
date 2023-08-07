@@ -10,11 +10,14 @@ const storedPlayers: PlayerStorageDTO[] = [
   { name: 'Mary Doe', team: TEAMS[0].name },
   { name: 'Marco Doe', team: TEAMS[1].name },
   { name: 'Michael Doe', team: TEAMS[1].name },
+  { name: 'Tony Doe', team: TEAMS[1].name },
 ]
+const team0PLayers = storedPlayers.filter((p) => p.team === TEAMS[0].name)
+const team1PLayers = storedPlayers.filter((p) => p.team === TEAMS[1].name)
 
 const inputID = 'player-name-input'
 const submitBtnID = 'submit-btn'
-const btnDeleteGroupID = 'remove-group-btn'
+const btnDeleteGroupID = 'delete-group-btn'
 const playersCounterID = 'players-counter'
 const emptyFeedbackID = 'empty-feedback'
 const teamSelectorID = 'team-selector'
@@ -30,4 +33,6 @@ export const PLayersScreenCommons = {
   emptyFeedbackID,
   teamSelectorID,
   playerCardID,
+  team0PLayers,
+  team1PLayers,
 }

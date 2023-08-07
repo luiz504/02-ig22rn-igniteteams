@@ -43,6 +43,20 @@ describe('Should render Groups Screen', () => {
     expect(navigateMock).toBeCalledWith('new-group')
   })
 
+  it('should not navigate if the group name does exists', () => {
+    const navigateMock = useMockNavigate()
+    renderWithThemeAndNavigation(<Groups />)
+
+    const btnCreateGroupElement = screen.getByTestId(btnCreateGroupID)
+
+    // Act
+    fireEvent.press(btnCreateGroupElement)
+
+    // Results
+    expect(navigateMock).toBeCalledTimes(1)
+    expect(navigateMock).toBeCalledWith('new-group')
+  })
+
   it('should navigate to the correct Players screen page', () => {
     jest
       .spyOn(localStorage, 'getString')
