@@ -1,3 +1,4 @@
+import { TextInput } from 'react-native'
 import styled, { css } from 'styled-components/native'
 
 type TextInputVariant = 'active' | 'error'
@@ -15,7 +16,7 @@ type ContainerProps = {
   variant?: TextInputVariant
 }
 
-export const Container = styled.TextInput<ContainerProps>`
+export const Container = styled(TextInput)<ContainerProps>`
   padding: 16px;
   border-radius: 6px;
 

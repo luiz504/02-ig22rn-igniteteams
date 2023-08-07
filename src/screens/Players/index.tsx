@@ -1,8 +1,14 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
-import { FC, useMemo, useState } from 'react'
-import { FlatList } from 'react-native'
+import { FC, useRef, useState } from 'react'
+import { Alert, FlatList, TextInput } from 'react-native'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import { ZodError } from 'zod'
 
-import { Form, RowFilters, Counter } from './styles'
+import { addPlayerByGroup } from '@/storage/players/addPlayerByGroup'
+import { getPlayerByGroupAndTeam } from '@/storage/players/getPlayersByGroupAndTeam'
+import { deletePlayerByGroup } from '@/storage/players/deletePlayerByGroup'
+import { deleteGroupByName } from '@/storage/groups/deleteGroupByName'
+
+import { AppError } from '@/utils/AppError'
 
 import { Header } from '@/components/Header'
 import { Highlight } from '@/components/Highlight'
@@ -13,49 +19,134 @@ import { PlayerCard } from '@/components/PlayerCard'
 import { ListEmptyFB } from '@/components/ListEmptyFB'
 import { Button } from '@/components/Button'
 import { ContainerBase } from '@/components/ContainerBase'
-import { useRoute } from '@react-navigation/native'
+
+import { Form, RowFilters, Counter } from './styles'
+
+import { TEAMS } from './constants'
 
 type RouteParams = {
-  team: {
+  group: {
     name: string
-    id: string
   }
 }
 export const Players: FC = () => {
-  const { team } = useRoute().params as RouteParams
+  const { group } = useRoute().params as RouteParams
+  const navigator = useNavigation()
+  //* Teams
+  const [teams] = useState(TEAMS)
+  const [activeTeam, setActiveTeam] = useState<string>(teams[0].name)
 
-  const [teams] = useState([
-    {
-      name: 'Team 1',
-      players: ['Luiz', 'Alexandre', 'Vania', 'Renato', 'Renata', 'Isablea'],
-    },
-    { name: 'Team 2', players: ['Marco', 'Vini'] },
-    { name: 'Team 3', players: [] },
-    { name: 'Team 4', players: ['Luiz', 'Alexandre'] },
-    { name: 'Team 5', players: ['Marco', 'Vini'] },
-    { name: 'Team 6', players: [] },
-  ])
-  const [activeTeam, setActiveTeam] = useState<string | null>(null)
+  //* Players
 
-  const playerOfSelectedTeam = useMemo(() => {
-    return teams.find((team) => team.name === activeTeam)?.players || []
-  }, [teams, activeTeam])
+  const [players, setPlayers] = useState(() => {
+    return getPlayerByGroupAndTeam(group.name, activeTeam)
+  })
 
-  const hasPlayersOnSelectedTeam = !!playerOfSelectedTeam.length
+  const fetchPlayersByTeam = (team: string) => {
+    try {
+      const players = getPlayerByGroupAndTeam(group.name, team)
+
+      setPlayers(players)
+    } catch (err) {
+      Alert.alert('Fetch Players', 'Fail to fetch players from team.')
+    }
+  }
+
+  const handleSelectTeam = (team: string) => {
+    setActiveTeam(team)
+    fetchPlayersByTeam(team)
+  }
+
+  //* Add Players
+  const [playerName, setPlayerName] = useState('')
+  const inputRef = useRef<TextInput>(null)
+
+  const handleAddTeamPlayer = () => {
+    const newPlayer = {
+      name: playerName,
+      team: activeTeam,
+    }
+
+    try {
+      addPlayerByGroup(newPlayer, group.name)
+      const updatedPlayers = getPlayerByGroupAndTeam(group.name, activeTeam)
+
+      setPlayerName('')
+      inputRef.current?.blur()
+      setPlayers(updatedPlayers)
+    } catch (err) {
+      let errorMsg = 'Fail to add a new player'
+
+      if (err instanceof AppError) {
+        errorMsg = err.message
+      }
+      if (err instanceof ZodError) {
+        errorMsg = err.errors[0].message
+      }
+      Alert.alert('New Player', errorMsg)
+    }
+  }
+
+  const hasPlayersOnSelectedTeam = !!players.length
+
+  //* Delete Players
+  const handleDeletePlayer = (playerName: string) => {
+    try {
+      deletePlayerByGroup(playerName, group.name)
+
+      fetchPlayersByTeam(activeTeam)
+    } catch (err) {
+      Alert.alert('Delete Player', 'Failed to delete this player')
+    }
+  }
+
+  //* Delete Group
+  const groupRemove = () => {
+    try {
+      deleteGroupByName(group.name)
+      navigator.navigate('groups')
+    } catch (err) {
+      Alert.alert('Delete Player', 'Failed to delete this group')
+    }
+  }
+
+  const handleDeleteGroup = () => {
+    Alert.alert('Delete Action', 'Are you sure about deleting this Group?', [
+      {
+        text: 'Yes, Delete it',
+        onPress: groupRemove,
+        style: 'destructive',
+      },
+      { text: 'Cancel' },
+    ])
+  }
 
   return (
     <ContainerBase>
       <Header showBackButton />
 
       <Highlight
-        title={team.name}
-        subtitle="Add the people and split the teams"
+        title={group.name}
+        subtitle="Add players and split the teams"
       />
 
       <Form>
-        <Input style={{ flex: 1 }} />
+        <Input
+          ref={inputRef}
+          style={{ flex: 1 }}
+          placeholder="Player Name"
+          value={playerName}
+          onChangeText={(value) => setPlayerName(value)}
+          testID="player-name-input"
+          onSubmitEditing={handleAddTeamPlayer}
+          keyboardAppearance="dark"
+        />
 
-        <ButtonIcon iconName="add" />
+        <ButtonIcon
+          iconName="add"
+          onPress={handleAddTeamPlayer}
+          testID="submit-btn"
+        />
       </Form>
 
       <RowFilters>
@@ -67,38 +158,49 @@ export const Players: FC = () => {
             <Filter
               label={item.name}
               isActive={item.name === activeTeam}
-              onPress={() => setActiveTeam(item.name)}
+              onPress={() => handleSelectTeam(item.name)}
+              testID={`team-selector`}
             />
           )}
           horizontal
         />
 
-        <Counter>2</Counter>
+        {!!players.length && (
+          <Counter testID="players-counter">{players.length}</Counter>
+        )}
       </RowFilters>
 
       <FlatList
-        data={playerOfSelectedTeam}
+        data={players}
         contentContainerStyle={[
           { rowGap: 12, paddingBottom: 32 },
           !hasPlayersOnSelectedTeam && {
             flex: 1,
           },
         ]}
-        keyExtractor={(item) => item}
+        keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
-          <PlayerCard label={item} onDeletePress={() => {}} />
+          <PlayerCard
+            label={item.name}
+            onDeletePress={() => handleDeletePlayer(item.name)}
+            testID="player-card"
+          />
         )}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={() => (
-          <ListEmptyFB message="There are no member on this team" />
+          <ListEmptyFB
+            message="There are no member on this team"
+            testID="empty-feedback"
+          />
         )}
       />
 
       <Button
         style={{ marginBottom: 24 }}
-        label="Remove Team"
+        label="Delete Group"
         type="secondary"
-        testID={'btn-remove-team'}
+        testID={'delete-group-btn'}
+        onPress={handleDeleteGroup}
       />
     </ContainerBase>
   )
