@@ -61,8 +61,6 @@ The following features were added additionally, meaning that learning something 
 
   </details>
 
----
-
 <details>
   <summary>Styled Components</summary>
 
@@ -111,6 +109,8 @@ By selecting `MMKV` over `AsyncStorage` for learning purposes, the project's dev
 </details>
 
 </details>
+
+---
 
 ## Running the Development Environment
 
