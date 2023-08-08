@@ -20,7 +20,7 @@ export function createGroup(groupName: string) {
     (t) => t.toLowerCase() === trimmedValue.toLowerCase(),
   )
 
-  if (teamAlreadyExists) throw new AppError('Team  name already in use.')
+  if (teamAlreadyExists) throw new AppError('Group name already in use.')
 
   const newGroups = [...storedTeams, groupName]
 

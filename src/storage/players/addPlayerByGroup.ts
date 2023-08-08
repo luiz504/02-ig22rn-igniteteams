@@ -9,12 +9,14 @@ export function addPlayerByGroup(
 ) {
   const storedPlayers = getPlayersByGroup(groupName)
 
-  const playerAlreadyExists = storedPlayers.some(
+  const playerAlreadyStored = storedPlayers.find(
     (player) => player.name === newPlayer.name,
   )
 
-  if (playerAlreadyExists) {
-    throw new AppError('This Player already included in the Team.')
+  if (playerAlreadyStored) {
+    throw new AppError(
+      `This Player already included in the "${playerAlreadyStored.team}".`,
+    )
   }
   const updatedGroup = [...storedPlayers, newPlayer]
 
