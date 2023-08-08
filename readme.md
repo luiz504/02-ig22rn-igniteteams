@@ -44,7 +44,7 @@ The following features were added additionally, meaning that learning something 
 ---
 
 ## Preview
-file:///home/luiz504/Videos/igniteteams.mp4
+https://luiz504.github.io/02-ig22rn-igniteteams/igniteteams.mp4
 
 ---
 
