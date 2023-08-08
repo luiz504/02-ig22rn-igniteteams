@@ -1,9 +1,9 @@
 import { FC } from 'react'
+import { useNavigation } from '@react-navigation/native'
 
 import logo from '@assets/logo.png'
 
 import { Container, BackIcon, Logo, BackButton } from './styles'
-import { useNavigation } from '@react-navigation/native'
 
 type HeaderProps = {
   showBackButton?: boolean

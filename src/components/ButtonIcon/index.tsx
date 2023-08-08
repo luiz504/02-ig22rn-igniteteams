@@ -1,8 +1,8 @@
 import { ComponentProps, FC } from 'react'
 import { TouchableOpacityProps } from 'react-native'
+import { MaterialIcons } from '@expo/vector-icons'
 
 import { Container, ButtonIconTypeStyleProps, Icon } from './styles'
-import { MaterialIcons } from '@expo/vector-icons'
 
 type IconName = ComponentProps<typeof MaterialIcons>['name']
 

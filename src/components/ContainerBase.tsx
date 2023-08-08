@@ -3,6 +3,6 @@ import { styled } from 'styled-components/native'
 
 export const ContainerBase = styled(SafeAreaView)`
   background-color: ${({ theme }) => theme.colors['gray-600']};
-  padding: 0 24px;
+  padding: 12px 24px;
   flex: 1;
 `

@@ -37,10 +37,7 @@ export const Groups: FC = () => {
     <>
       <ContainerBase testID="wrapper-groups">
         <Header />
-        <Highlight
-          title={'New Group'}
-          subtitle={'Create a new Group to add members'}
-        />
+        <Highlight title={'Groups'} subtitle={'Play with your group'} />
 
         <FlatList
           data={groups}
@@ -60,8 +57,8 @@ export const Groups: FC = () => {
         />
 
         <Button
-          style={{ marginVertical: 16 }}
-          label="Create new Group"
+          style={{ marginVertical: 12 }}
+          label="Create new group"
           onPress={handleNewGroup}
           testID="btn-create-group"
         />

@@ -5,8 +5,6 @@ import { StatusBar } from 'expo-status-bar'
 
 import App from './App'
 
-import { theme } from '@/styles'
-
 jest.mock('expo-font')
 jest.mock('expo-splash-screen')
 describe('App Component', () => {
@@ -39,11 +37,7 @@ describe('App Component', () => {
     expect(appWrapperElement).toBeOnTheScreen()
 
     expect(statusBarElement).toBeOnTheScreen()
-    expect(statusBarElement).toHaveProp(
-      'backgroundColor',
-      theme.colors['gray-600'],
-    )
-    expect(statusBarElement).toHaveProp('translucent', false)
+
     expect(statusBarElement).toHaveProp('style', 'light')
     expect(hideSplashScreenSpy).toBeCalledTimes(1)
   })

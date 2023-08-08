@@ -1,8 +1,10 @@
 import { render, screen } from '@testing-library/react-native'
-import { ButtonIcon } from '.'
+import { MaterialIcons } from '@expo/vector-icons'
+
 import { ThemeProvider } from '@/providers/ThemeProvider'
 import { theme } from '@/styles'
-import { MaterialIcons } from '@expo/vector-icons'
+
+import { ButtonIcon } from '.'
 describe('ButtonIcon Component', () => {
   const btnRootId = 'btn-id'
   const iconName = '10k'

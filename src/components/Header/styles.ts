@@ -1,6 +1,7 @@
 import styled from 'styled-components/native'
-import CaretLeft from '@assets/icons/caret-left.svg'
 import { TouchableOpacity } from 'react-native'
+
+import CaretLeft from '@assets/icons/caret-left.svg'
 
 export const Container = styled.View`
   width: 100%;
