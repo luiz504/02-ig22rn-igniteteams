@@ -1,7 +1,7 @@
 import { FC } from 'react'
+import { TouchableOpacityProps } from 'react-native'
 
 import { Container, Icon, Text } from './styles'
-import { TouchableOpacityProps } from 'react-native'
 
 interface GroupCardProps extends TouchableOpacityProps {
   name: string

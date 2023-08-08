@@ -1,8 +1,10 @@
 import { fireEvent, screen } from '@testing-library/react-native'
-import { Groups } from '.'
-import { renderWithThemeAndNavigation } from '@/utils/test-utils'
 import { useNavigation } from '@react-navigation/native'
+
+import { renderWithThemeAndNavigation } from '@/utils/test-utils'
 import { localStorage } from '@/libs/mmkv'
+
+import { Groups } from '.'
 
 jest.mock('@react-navigation/native', () => {
   return {

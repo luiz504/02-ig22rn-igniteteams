@@ -1,8 +1,9 @@
 import { fireEvent, screen } from '@testing-library/react-native'
-import { Header } from '.'
+import { useNavigation } from '@react-navigation/native'
 
 import { renderWithThemeAndNavigation } from '@/utils/test-utils'
-import { useNavigation } from '@react-navigation/native'
+
+import { Header } from '.'
 
 jest.mock('@react-navigation/native', () => {
   return {

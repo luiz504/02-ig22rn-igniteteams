@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react-native'
-import { Input } from '.'
 import { ThemeProvider } from '@/providers/ThemeProvider'
 import { theme } from '@/styles'
 
+import { Input } from '.'
 describe('Input Component', () => {
   const testID = 'input-id'
   it('should render correctly with placeholder and focused styles', async () => {

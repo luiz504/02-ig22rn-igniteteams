@@ -1,11 +1,12 @@
 import { Alert } from 'react-native'
 import { fireEvent, screen } from '@testing-library/react-native'
 import { useNavigation } from '@react-navigation/native'
-import { NewGroup } from '.'
 
 import { renderWithThemeAndNavigation } from '@/utils/test-utils'
 import { localStorage } from '@/libs/mmkv'
 import { theme } from '@/styles'
+
+import { NewGroup } from '.'
 
 jest.mock('@react-navigation/native', () => {
   return {

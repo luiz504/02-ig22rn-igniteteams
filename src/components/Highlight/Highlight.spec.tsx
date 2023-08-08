@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react-native'
-import { Highlight } from '.'
+
 import { ThemeProvider } from '@/providers/ThemeProvider'
+
+import { Highlight } from '.'
 
 describe('Highlight Component', () => {
   it('should render correctly', () => {

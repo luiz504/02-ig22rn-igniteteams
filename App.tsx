@@ -5,8 +5,6 @@ import * as SplashScreen from 'expo-splash-screen'
 
 import { ThemeProvider } from '@/providers/ThemeProvider'
 
-import { theme } from '@/styles'
-
 import { Routes } from '@/routes'
 
 SplashScreen.preventAutoHideAsync()
@@ -27,11 +25,7 @@ export default function App() {
     <ThemeProvider>
       {
         <>
-          <StatusBar
-            style="light"
-            translucent={false}
-            backgroundColor={theme.colors['gray-600']}
-          />
+          <StatusBar style="light" />
           <Routes />
         </>
       }

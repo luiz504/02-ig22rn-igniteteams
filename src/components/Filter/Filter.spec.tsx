@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react-native'
-import { Filter } from '.'
 
 import { ThemeProvider } from '@/providers/ThemeProvider'
 import { theme } from '@/styles'
+
+import { Filter } from '.'
 
 describe('Filter Component', () => {
   const label = 'fake-label'

@@ -127,7 +127,7 @@ export const Players: FC = () => {
 
       <Highlight
         title={group.name}
-        subtitle="Add players and split the teams"
+        subtitle="Add players and divide the teams"
       />
 
       <Form>
@@ -189,14 +189,14 @@ export const Players: FC = () => {
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={() => (
           <ListEmptyFB
-            message="There are no member on this team"
+            message="This team currently has no players."
             testID="empty-feedback"
           />
         )}
       />
 
       <Button
-        style={{ marginBottom: 24 }}
+        style={{ marginBottom: 12 }}
         label="Delete Group"
         type="secondary"
         testID={'delete-group-btn'}

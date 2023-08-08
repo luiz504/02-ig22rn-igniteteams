@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react-native'
 
-import { GroupCard } from '.'
 import { ThemeProvider } from '@/providers/ThemeProvider'
+
+import { GroupCard } from '.'
 
 describe('GroupCard Component', () => {
   it('should render correctly', () => {

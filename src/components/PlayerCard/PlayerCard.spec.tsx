@@ -1,7 +1,9 @@
 import { fireEvent, screen } from '@testing-library/react-native'
-import { PlayerCard } from '.'
-import { renderWithTheme } from '@/utils/test-utils'
 import { MaterialIcons } from '@expo/vector-icons'
+
+import { renderWithTheme } from '@/utils/test-utils'
+
+import { PlayerCard } from '.'
 
 describe('PlayerCard Component', () => {
   const label = 'Label'

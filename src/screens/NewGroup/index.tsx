@@ -1,5 +1,5 @@
-import { Alert, KeyboardAvoidingView, TextInput } from 'react-native'
 import { FC, useRef, useState } from 'react'
+import { Alert, KeyboardAvoidingView, TextInput } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { ZodError } from 'zod'
 
@@ -49,12 +49,12 @@ export const NewGroup: FC = () => {
 
         <Highlight
           title="New Group"
-          subtitle="Create a new Group to add members"
+          subtitle="Create a new group to add players"
         />
 
         <Input
           ref={inputRef}
-          placeholder="New Group name"
+          placeholder="Group name"
           value={groupName}
           onChangeText={(e) => setGroupName(e)}
           keyboardAppearance="dark"
