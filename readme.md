@@ -45,9 +45,6 @@ The following features were added additionally, meaning that learning something 
 
 ## Preview
 
-file:///home/luiz504/Videos/igniteteams.webm
-
-
 ---
 
 <details>
